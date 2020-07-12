@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light">
-        <activity android:name="www.thecodemonks.techbytes.ui.ProductHuntActivity"></activity>
-        <activity android:name="www.thecodemonks.techbytes.NewsDetailsActivity" />
-        <activity android:name="www.thecodemonks.techbytes.MainActivity">
+        <activity android:name=".ui.ProductHuntActivity" />
+        <activity android:name=".NewsDetailsActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
