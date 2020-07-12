@@ -52,20 +52,19 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun sourceObserver(source: String?) {
+    private fun sourceObserver(url: String?) {
 
-        source?.let {
+        url?.let {
             viewModel.getTopic(it).observe(this, Observer {
 
                 Thread {
-                    val url = source
-                    val document = Jsoup.connect(url).get()
+                    val document = Jsoup.connect(it).get()
                     val articles = mutableListOf<Article>()
 
                     // Path of articles in web
                     val articleHTML = document.getElementById("stream-panel")
-                        .select("div").first().select("ol")
-                        .select("div").select("div").select("a")
+                            .select("div").first().select("ol")
+                            .select("div").select("div").select("a")
 
                     articleHTML.forEach { item ->
                         // iterate each article to get content
@@ -92,6 +91,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     // submit articles list to adapter
+                    adapter.differ.currentList.clear()
                     adapter.differ.submitList(articles)
 
                     // onclick open news details activity

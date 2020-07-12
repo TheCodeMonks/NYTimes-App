@@ -44,8 +44,7 @@ class CategoryAdapter(val category: MutableList<Category>) :
                     it(category[position])
 
                     if (selectedItem == position) {
-                        selectedItem = RecyclerView.NO_POSITION
-                        notifyDataSetChanged()
+                        notifyItemChanged(position)
                         return@setOnClickListener
 
                     }
@@ -70,22 +69,6 @@ class CategoryAdapter(val category: MutableList<Category>) :
                         ContextCompat.getColor(
                             context,
                             R.color.design_default_color_primary
-                        ), PorterDuff.Mode.SRC_ATOP
-                    )
-                }
-
-                RecyclerView.NO_POSITION -> {
-                    item_category_title.setTextColor(
-                        ContextCompat.getColor(
-                            item_category_title.context,
-                            R.color.black
-                        )
-                    )
-
-                    item_category_title.background.setColorFilter(
-                        ContextCompat.getColor(
-                            context,
-                            R.color.blue_smoke
                         ), PorterDuff.Mode.SRC_ATOP
                     )
                 }
