@@ -1,19 +1,25 @@
-package www.thecodemonks.techbytes
+package www.thecodemonks.techbytes.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jsoup.Jsoup
+import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.adapter.NewsAdapter
+import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.model.Category
+import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.utils.Utils
 import www.thecodemonks.techbytes.viewmodel.NewsViewModel
+import www.thecodemonks.techbytes.viewmodel.NewsViewModelProviderFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -24,7 +30,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // init show viewModel
-        viewModel = this.let { ViewModelProvider(this).get(NewsViewModel::class.java) }
+        val repo = Repo(ArticleDatabase(this))
+        val viewModelProviderFactory = NewsViewModelProviderFactory(repo)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
+
 
         // add category
         val category = ArrayList<Category>()
@@ -50,7 +59,6 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
 
     private fun sourceObserver(url: String?) {
 
@@ -95,9 +103,13 @@ class MainActivity : AppCompatActivity() {
                     adapter.differ.submitList(articles)
 
                     // onclick open news details activity
-                    adapter.setOnItemClickListener {
+                    adapter.setOnItemClickListener { articleLink ->
                         val intent = Intent(this, NewsDetailsActivity::class.java)
-                        intent.putExtra("source", it.source)
+                        intent.putExtra("title", articleLink.title)
+                        intent.putExtra("description", articleLink.description)
+                        intent.putExtra("image", articleLink.image)
+                        intent.putExtra("author", articleLink.author)
+                        intent.putExtra("source", articleLink.source)
                         startActivity(intent)
                     }
 
@@ -105,5 +117,26 @@ class MainActivity : AppCompatActivity() {
 
             })
         }
+    }
+
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here.
+
+        return when (item.itemId) {
+            R.id.action_one -> {
+                startActivity(Intent(this, BookmarkActivity::class.java))
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
+
     }
 }

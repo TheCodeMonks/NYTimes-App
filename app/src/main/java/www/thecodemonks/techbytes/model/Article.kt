@@ -1,10 +1,22 @@
 package www.thecodemonks.techbytes.model
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 
+@Entity(
+    tableName = "article"
+)
 data class Article(
-        val title: String? = null,
-        val description: String? = null,
-        val image: String? = null,
-        val author: String? = null,
-        val source: String? = null
+    @PrimaryKey
+    @ColumnInfo(name = "title")
+    val title: String = " ",
+    @ColumnInfo(name = "description")
+    val description: String? = null,
+    @ColumnInfo(name = "image")
+    val image: String? = null,
+    @ColumnInfo(name = "author")
+    val author: String? = null,
+    @ColumnInfo(name = "source")
+    val source: String? = null
 )

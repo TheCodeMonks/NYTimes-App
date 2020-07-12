@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light">
-        <activity android:name=".ui.ProductHuntActivity" />
-        <activity android:name=".NewsDetailsActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.BookmarkActivity" />
+        <activity android:name=".ui.NewsDetailsActivity" />
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -2,7 +2,6 @@ package www.thecodemonks.techbytes.utils
 
 object Utils {
     const val URL = "https://www.nytimes.com"
-    const val PRODUCT_HUNT = "https://www.producthunt.com"
     const val NY_SCIENCE = "https://www.nytimes.com/section/science"
     const val NY_TECH = "https://www.nytimes.com/section/technology"
     const val NY_BUSINESS = "https://www.nytimes.com/section/business/smallbusiness"
