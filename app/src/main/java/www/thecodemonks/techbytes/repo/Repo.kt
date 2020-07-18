@@ -5,7 +5,7 @@ import www.thecodemonks.techbytes.model.Article
 
 class Repo(private val db: ArticleDatabase) {
 
-    // upsert article
+    // insert or update article
     suspend fun upsertArticle(article: Article) = db.getArticleDao().upsert(article)
 
     // get saved article

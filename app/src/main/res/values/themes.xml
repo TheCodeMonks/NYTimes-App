@@ -22,4 +22,8 @@
         <item name="checkedIcon">@null</item>
     </style>
 
+    <style name="ProgressBarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorAccent">@color/teal_200</item>
+    </style>
+
 </resources>

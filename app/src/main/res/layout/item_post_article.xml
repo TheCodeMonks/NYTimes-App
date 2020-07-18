@@ -23,9 +23,11 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/gilroybold"
         android:layout_toEndOf="@id/item_article_image"
         android:ellipsize="end"
         android:maxLines="2"
+        android:lineHeight="24dp"
         android:text="@string/title_holder"
         android:textColor="@android:color/black"
         android:textStyle="bold" />

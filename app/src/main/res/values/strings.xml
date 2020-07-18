@@ -4,4 +4,5 @@
     <string name="desc_holder">The social network has been under intense pressure for allowing misinformation and hate speech to spread on its site.</string>
     <string name="author">By Sanju S</string>
     <string name="bookmark">Bookmark</string>
+    <string name="bookmarks_holder">Bookmarks</string>
 </resources>

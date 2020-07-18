@@ -25,6 +25,10 @@ class BookmarkActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bookmark)
 
+        supportActionBar!!.title = getString(R.string.bookmarks_holder)
+
+
+        //setup rv
         setUpRV()
 
         // init viewModelProvider

@@ -5,11 +5,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.MainActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/article_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_chips"
+        android:visibility="gone"
         tools:listitem="@layout/item_post_article" />
 
 
@@ -29,6 +31,14 @@
             tools:listitem="@layout/item_post_category" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:theme="@style/ProgressBarTheme"
+        android:visibility="gone" />
 
 
 </RelativeLayout>

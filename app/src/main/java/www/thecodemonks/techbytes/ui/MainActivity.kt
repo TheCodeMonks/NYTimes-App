@@ -2,13 +2,18 @@ package www.thecodemonks.techbytes.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.StrictMode
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.adapter.CategoryAdapter
@@ -28,6 +33,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
         // init show viewModel
         val repo = Repo(ArticleDatabase(this))
@@ -55,24 +63,26 @@ class MainActivity : AppCompatActivity() {
 
         // onclick select source & observe live data change
         adapter.setOnItemClickListener {
+            progress_view.visibility = View.VISIBLE
             sourceObserver(it.source)
         }
+
 
     }
 
     private fun sourceObserver(url: String?) {
 
-        url?.let {
-            viewModel.getTopic(it).observe(this, Observer {
 
-                Thread {
-                    val document = Jsoup.connect(it).get()
+        GlobalScope.launch(Dispatchers.Main) {
+            url?.let { url ->
+                viewModel.getTopic(url).observe(this@MainActivity, Observer { topic ->
+                    val document = Jsoup.connect(topic).get()
                     val articles = mutableListOf<Article>()
 
                     // Path of articles in web
                     val articleHTML = document.getElementById("stream-panel")
-                            .select("div").first().select("ol")
-                            .select("div").select("div").select("a")
+                        .select("div").select("ol")
+                        .select("div").select("div").select("a")
 
                     articleHTML.forEach { item ->
                         // iterate each article to get content
@@ -89,13 +99,13 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
-
                     // init adapter
                     val adapter = NewsAdapter()
                     article_rv.rootView.post {
                         article_rv.adapter = adapter
-                        article_rv.layoutManager = LinearLayoutManager(this)
-
+                        article_rv.layoutManager = LinearLayoutManager(this@MainActivity)
+                        article_rv.visibility = View.VISIBLE
+                        progress_view.visibility = View.GONE
                     }
 
                     // submit articles list to adapter
@@ -104,7 +114,7 @@ class MainActivity : AppCompatActivity() {
 
                     // onclick open news details activity
                     adapter.setOnItemClickListener { articleLink ->
-                        val intent = Intent(this, NewsDetailsActivity::class.java)
+                        val intent = Intent(this@MainActivity, NewsDetailsActivity::class.java)
                         intent.putExtra("title", articleLink.title)
                         intent.putExtra("description", articleLink.description)
                         intent.putExtra("image", articleLink.image)
@@ -112,11 +122,11 @@ class MainActivity : AppCompatActivity() {
                         intent.putExtra("source", articleLink.source)
                         startActivity(intent)
                     }
+                })
+            }
 
-                }.start()
-
-            })
         }
+
     }
 
 
