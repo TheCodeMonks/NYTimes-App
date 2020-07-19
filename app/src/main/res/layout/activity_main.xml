@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:theme="@style/ProgressBarTheme"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 
 </RelativeLayout>
