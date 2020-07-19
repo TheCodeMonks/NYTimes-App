@@ -2,8 +2,8 @@
 
 ![GitHub Cards Preview](https://github.com/TheCodeMonks/TechBytes/blob/master/screenshots/nytimes_card.jpg?raw=true)
 
-# NY Times
-**NY Times** is an Minimal News 📝 Android application built to describe the use of JSoup with Modern Android development tools.  *Made with love ❤️ by [Spikeysanju](https://github.com/Spikeysanju)*
+# 🗞 NY Times
+**NY Times** is an Minimal News 🗞 Android application built to describe the use of JSoup with Modern Android development tools.  *Made with love ❤️ by [Spikeysanju](https://github.com/Spikeysanju)*
 
 ***Try latest NY Times app apk from below 👇***
 
