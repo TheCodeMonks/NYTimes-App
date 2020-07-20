@@ -43,7 +43,13 @@ import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModel
-import www.thecodemonks.techbytes.utils.Utils
+import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
+import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
+import www.thecodemonks.techbytes.utils.Constants.NY_SCIENCE
+import www.thecodemonks.techbytes.utils.Constants.NY_SPACE
+import www.thecodemonks.techbytes.utils.Constants.NY_SPORTS
+import www.thecodemonks.techbytes.utils.Constants.NY_TECH
+import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
 
 
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
@@ -51,8 +57,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
     private lateinit var viewModel: NewsViewModel
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var categoryAdapter: CategoryAdapter
-    private lateinit var category: ArrayList<Category>
-
+    private lateinit var category: MutableList<Category>
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -69,54 +74,18 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         viewModel = (activity as BaseActivity).viewModel
 
         // add category list
-        category = ArrayList()
-        category.add(
-            Category(
-                "Business",
-                Utils.NY_BUSINESS
-            )
+        category = mutableListOf(
+            Category("Business", NY_BUSINESS),
+            Category("Education", NY_EDUCATION),
+            Category("Science", NY_SCIENCE),
+            Category("Space", NY_SPACE),
+            Category("Sports", NY_SPORTS),
+            Category("Tech", NY_TECH),
+            Category("Your money", NY_YOURMONEY)
         )
-        category.add(
-            Category(
-                "Education",
-                Utils.NY_EDUCATION
-            )
-        )
-        category.add(
-            Category(
-                "Science",
-                Utils.NY_SCIENCE
-            )
-        )
-        category.add(
-            Category(
-                "Space",
-                Utils.NY_SPACE
-            )
-        )
-        category.add(
-            Category(
-                "Sports",
-                Utils.NY_SPORTS
-            )
-        )
-        category.add(
-            Category(
-                "Tech",
-                Utils.NY_TECH
-            )
-        )
-        category.add(
-            Category(
-                "Your money",
-                Utils.NY_YOURMONEY
-            )
-        )
-
 
         // attach category list to adapter
-        categoryAdapter =
-            CategoryAdapter(category)
+        categoryAdapter = CategoryAdapter(category)
         category_rv.rootView.post {
             category_rv.adapter = categoryAdapter
             category_rv.layoutManager =
