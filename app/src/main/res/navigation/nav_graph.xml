@@ -55,7 +55,11 @@
         android:id="@+id/bookmarksFragment"
         android:name="www.thecodemonks.techbytes.ui.bookmarks.BookmarksFragment"
         android:label="Bookmarks"
-        tools:layout="@layout/fragment_bookmarks" />
+        tools:layout="@layout/fragment_bookmarks" >
+        <action
+            android:id="@+id/action_bookmarksFragment_to_articleDetailsFragment"
+            app:destination="@id/articleDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/articleDetailsFragment"
         android:name="www.thecodemonks.techbytes.ui.details.ArticleDetailsFragment"
