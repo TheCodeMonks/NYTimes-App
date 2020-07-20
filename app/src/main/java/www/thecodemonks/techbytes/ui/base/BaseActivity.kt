@@ -35,13 +35,13 @@ import androidx.navigation.ui.NavigationUI
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.Repo
-import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModel
+import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModelProviderFactory
 
 
 class BaseActivity : AppCompatActivity() {
 
-    lateinit var viewModel: NewsViewModel
+    lateinit var viewModel: ArticleViewModel
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +56,8 @@ class BaseActivity : AppCompatActivity() {
             NewsViewModelProviderFactory(
                 repo
             )
-        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(NewsViewModel::class.java)
+        viewModel =
+            ViewModelProvider(this, viewModelProviderFactory).get(ArticleViewModel::class.java)
 
         // init nav controller with back action button
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)

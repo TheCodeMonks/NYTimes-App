@@ -26,10 +26,14 @@
 
 package www.thecodemonks.techbytes.repo
 
+import androidx.lifecycle.MutableLiveData
+import org.jsoup.Jsoup
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.model.Article
 
 class Repo(private val db: ArticleDatabase) {
+
+    var crawledFromNYTimes: MutableLiveData<List<Article>> = MutableLiveData()
 
     // insert or update article
     suspend fun upsertArticle(article: Article) = db.getArticleDao().upsert(article)
@@ -39,5 +43,46 @@ class Repo(private val db: ArticleDatabase) {
 
     // delete article
     suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
+
+    // crawl data from ny times by selecting Xpath elements
+    fun crawlFromNYTimes(url: String): MutableLiveData<List<Article>> {
+
+        val document = Jsoup.connect(url).get()
+        val articles: MutableList<Article> = mutableListOf()
+
+        // Path of articles present in the web
+        val articleHTML = document.getElementById("stream-panel")
+            .select("div").select("ol")
+            .select("div").select("div").select("a")
+
+        // iterate each article to get content
+        articleHTML.forEach { item ->
+            val image = item.select("div").select("figure")
+                .select("div").select("img").attr("src")
+            val title = item.select("h2").text()
+            val description = item.select("p").text()
+            val author = item.select("div").select("p").select("span").text()
+            val source = item.attr("href")
+
+            // check for null content
+            if (!image.isNullOrEmpty() || !title.isNullOrEmpty() || !description.isNullOrEmpty() || !author.isNullOrEmpty() || !source.isNullOrEmpty()) {
+                val article = Article(
+                    title,
+                    description,
+                    image,
+                    author,
+                    source
+                )
+                // add iterated articles to list
+                articles.add(article)
+            }
+        }
+
+        // post value to liveData after crawling
+        crawledFromNYTimes.value = articles
+
+        return crawledFromNYTimes
+    }
+
 
 }

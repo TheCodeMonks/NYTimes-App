@@ -35,6 +35,6 @@ class NewsViewModelProviderFactory(private val repo: Repo) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return NewsViewModel(repo) as T
+        return ArticleViewModel(repo) as T
     }
 }

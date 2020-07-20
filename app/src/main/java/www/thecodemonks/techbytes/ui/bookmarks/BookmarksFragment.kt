@@ -40,11 +40,11 @@ import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
-import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModel
+import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 
 
 class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
-    private lateinit var viewModel: NewsViewModel
+    private lateinit var viewModel: ArticleViewModel
     private lateinit var newsAdapter: NewsAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

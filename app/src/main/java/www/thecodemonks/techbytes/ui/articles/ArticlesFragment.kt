@@ -42,7 +42,7 @@ import www.thecodemonks.techbytes.model.Category
 import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
-import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModel
+import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
 import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
 import www.thecodemonks.techbytes.utils.Constants.NY_SCIENCE
@@ -54,7 +54,7 @@ import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
 
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
-    private lateinit var viewModel: NewsViewModel
+    private lateinit var viewModel: ArticleViewModel
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var category: MutableList<Category>
@@ -121,11 +121,12 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
     private fun startCrawlObserver(url: String?) {
         progress_view.visibility = View.VISIBLE
         url?.let { currentTopic ->
-            viewModel.crawlFromNY(currentTopic).observe(viewLifecycleOwner, Observer { list ->
+            viewModel.crawlFromNYTimes(currentTopic).observe(viewLifecycleOwner, Observer { list ->
                 newsAdapter.differ.submitList(list)
                 progress_view.visibility = View.GONE
             })
         }
+
     }
 
 
