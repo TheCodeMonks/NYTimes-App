@@ -25,24 +25,7 @@
   ~  */
   -->
 
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="www.thecodemonks.techbytes">
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/nytimes"
-        android:label="@string/app_name"
-        android:roundIcon="@drawable/nytimes"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Topten">
-        <activity android:name="www.thecodemonks.techbytes.ui.base.BaseActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-
-</manifest>
+<resources>
+    <color name="colorSurface">@color/black</color>
+    <color name="colorPrimary">@color/purple_200</color>
+</resources>

@@ -9,4 +9,12 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue_smoke">#f3f7f9</color>
 
+    <color name="colorSurface">@color/white</color>
+    <color name="colorPrimary">@color/purple_500</color>
+    <color name="colorPrimaryVariant">@color/purple_700</color>
+    <color name="colorOnPrimary">@color/white</color>
+    <color name="colorSecondary">@color/teal_200</color>
+    <color name="colorSecondaryVariant">@color/teal_700</color>
+    <color name="colorOnSecondary">@color/black</color>
+
 </resources>
