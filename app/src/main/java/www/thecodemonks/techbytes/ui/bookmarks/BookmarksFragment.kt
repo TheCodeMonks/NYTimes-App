@@ -110,7 +110,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
                 putSerializable("article", article)
             }
             findNavController().navigate(
-                R.id.action_articlesFragment_to_articleDetailsFragment,
+                R.id.action_bookmarksFragment_to_articleDetailsFragment,
                 bundle
             )
         }
