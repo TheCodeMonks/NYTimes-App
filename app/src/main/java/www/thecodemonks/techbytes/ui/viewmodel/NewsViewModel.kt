@@ -34,14 +34,14 @@ import kotlinx.coroutines.launch
 import org.jsoup.Jsoup
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.repo.Repo
-import www.thecodemonks.techbytes.utils.Utils
+import www.thecodemonks.techbytes.utils.Constants
 
 
 class NewsViewModel(private val repo: Repo) : ViewModel() {
 
     var crawledFromNY: MutableLiveData<List<Article>> = MutableLiveData()
     val currentTopic: MutableLiveData<String> by lazy {
-        MutableLiveData<String>().defaultTopic(Utils.NY_TECH)
+        MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
     }
 
     // save article

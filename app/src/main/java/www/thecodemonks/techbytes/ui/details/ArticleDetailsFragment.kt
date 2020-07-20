@@ -37,7 +37,7 @@ import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModel
-import www.thecodemonks.techbytes.utils.Utils
+import www.thecodemonks.techbytes.utils.Constants
 
 
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
@@ -51,7 +51,7 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
 
         // receive bundle here
         val bundle = args.article
-        val completeUrl = Utils.URL.plus(bundle.source)
+        val completeUrl = Constants.URL.plus(bundle.source)
 
         // webView with url has param
         web_view.apply {

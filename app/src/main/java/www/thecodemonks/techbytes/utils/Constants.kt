@@ -27,7 +27,7 @@
 package www.thecodemonks.techbytes.utils
 
 
-object Utils {
+object Constants {
     const val URL = "https://www.nytimes.com"
     const val NY_SCIENCE = "https://www.nytimes.com/section/science"
     const val NY_TECH = "https://www.nytimes.com/section/technology"
