@@ -26,14 +26,11 @@
 
 package www.thecodemonks.techbytes.repo
 
-import androidx.lifecycle.MutableLiveData
 import org.jsoup.Jsoup
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.model.Article
 
 class Repo(private val db: ArticleDatabase) {
-
-    var crawledFromNYTimes: MutableLiveData<List<Article>> = MutableLiveData()
 
     // insert or update article
     suspend fun upsertArticle(article: Article) = db.getArticleDao().upsert(article)
@@ -45,7 +42,7 @@ class Repo(private val db: ArticleDatabase) {
     suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
 
     // crawl data from ny times by selecting Xpath elements
-    fun crawlFromNYTimes(url: String): MutableLiveData<List<Article>> {
+    fun crawlFromNYTimes(url: String): List<Article> {
 
         val document = Jsoup.connect(url).get()
         val articles: MutableList<Article> = mutableListOf()
@@ -78,10 +75,7 @@ class Repo(private val db: ArticleDatabase) {
             }
         }
 
-        // post value to liveData after crawling
-        crawledFromNYTimes.value = articles
-
-        return crawledFromNYTimes
+        return articles
     }
 
 
