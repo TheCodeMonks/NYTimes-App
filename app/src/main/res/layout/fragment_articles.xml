@@ -37,10 +37,9 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="?listPreferredItemHeightLarge"
         android:orientation="vertical"
-        android:visibility="gone"
+        android:alpha="0"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_post_article"
-        tools:visibility="visible" />
+        tools:listitem="@layout/item_post_article" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottom_chips"

@@ -31,11 +31,9 @@ import android.os.StrictMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_articles.*
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.model.Category
@@ -94,9 +92,21 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
         // observe changes on topic change for list
         viewModel.currentTopic.observe(viewLifecycleOwner, Observer {
-            startCrawlObserver(it.toString())
+            article_rv.animate().alpha(0f)
+                .withStartAction { progress_view.animate().alpha(1f) }
+                .withEndAction {
+                    viewModel.crawlFromNYTimes(it.toString())
+                }
         })
 
+        // observe the articles
+        viewModel.articles.observe(viewLifecycleOwner, Observer {
+            newsAdapter.differ.submitList(it)
+            progress_view.animate().alpha(0f)
+                .withEndAction {
+                    article_rv.animate().alpha(1f)
+                }
+        })
 
         // onclick to select source & post value to liveData
         categoryAdapter.setOnItemClickListener {
@@ -117,18 +127,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
 
     }
-
-    private fun startCrawlObserver(url: String?) {
-        progress_view.visibility = View.VISIBLE
-        url?.let { currentTopic ->
-            viewModel.crawlFromNYTimes(currentTopic).observe(viewLifecycleOwner, Observer { list ->
-                newsAdapter.differ.submitList(list)
-                progress_view.visibility = View.GONE
-            })
-        }
-
-    }
-
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -151,7 +149,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         article_rv.apply {
             adapter = newsAdapter
             addItemDecoration(SpacesItemDecorator(16))
-            article_rv.visibility = View.VISIBLE
         }
     }
 
