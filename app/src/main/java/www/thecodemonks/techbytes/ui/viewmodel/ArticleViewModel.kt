@@ -26,9 +26,11 @@
 
 package www.thecodemonks.techbytes.ui.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.repo.Repo
@@ -36,6 +38,10 @@ import www.thecodemonks.techbytes.utils.Constants
 
 
 class ArticleViewModel(private val repo: Repo) : ViewModel() {
+
+    private val _articles = MutableLiveData<List<Article>>()
+    val articles: LiveData<List<Article>>
+        get() = _articles
 
     val currentTopic: MutableLiveData<String> by lazy {
         MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
@@ -55,7 +61,11 @@ class ArticleViewModel(private val repo: Repo) : ViewModel() {
     }
 
     // crawl data from NY times
-    fun crawlFromNYTimes(url: String) = repo.crawlFromNYTimes(url)
+    fun crawlFromNYTimes(url: String) {
+        viewModelScope.launch(IO) {
+            _articles.postValue(repo.crawlFromNYTimes(url))
+        }
+    }
 
 
     private fun <T : Any?> MutableLiveData<T>.defaultTopic(initialValue: T) =
