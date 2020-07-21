@@ -50,6 +50,7 @@ import www.thecodemonks.techbytes.utils.Constants.NY_SPACE
 import www.thecodemonks.techbytes.utils.Constants.NY_SPORTS
 import www.thecodemonks.techbytes.utils.Constants.NY_TECH
 import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
+import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 
 
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
@@ -88,8 +89,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         categoryAdapter = CategoryAdapter(category)
         category_rv.rootView.post {
             category_rv.adapter = categoryAdapter
-            category_rv.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            category_rv.addItemDecoration(SpacesItemDecorator(16))
         }
 
         // observe changes on topic change for list
@@ -150,9 +150,8 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         newsAdapter = NewsAdapter()
         article_rv.apply {
             adapter = newsAdapter
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
+            addItemDecoration(SpacesItemDecorator(16))
             article_rv.visibility = View.VISIBLE
-
         }
     }
 
