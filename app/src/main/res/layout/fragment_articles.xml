@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * MIT License
   ~  *
@@ -25,46 +24,49 @@
   ~  */
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="www.thecodemonks.techbytes.ui.base.BaseActivity">
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/article_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_chips"
+        android:orientation="vertical"
         android:visibility="gone"
-        tools:listitem="@layout/item_post_article" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_post_article"
+        tools:visibility="visible" />
 
-
-    <LinearLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/bottom_chips"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:elevation="5dp">
+        android:layout_height="?listPreferredItemHeightLarge"
+        android:layout_gravity="bottom"
+        android:backgroundTint="?colorSurface"
+        app:cardElevation="4dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_rv"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:padding="10dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_post_category" />
 
-    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
     <ProgressBar
         android:id="@+id/progress_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:theme="@style/ProgressBarTheme"
+        android:layout_gravity="center"
         android:visibility="visible" />
 
-
-</RelativeLayout>
+</FrameLayout>
