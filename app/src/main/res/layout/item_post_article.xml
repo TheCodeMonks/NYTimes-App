@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * MIT License
   ~  *
@@ -29,9 +28,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="horizontal"
+    android:layout_height="124dp"
     android:background="?selectableItemBackground"
-    android:layout_height="124dp">
+    android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/item_article_image"
@@ -45,24 +44,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_gravity="center_vertical"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/item_article_title"
             android:layout_width="267dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/gilroybold"
             android:layout_toEndOf="@id/item_article_image"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:fontFamily="@font/gilroybold"
             android:lineHeight="24dp"
-            android:textColor="@color/black"
-            tools:text="@string/title_holder"
-            android:textStyle="bold" />
+            android:maxLines="2"
+            android:textColor="?android:textColorPrimary"
+            android:textStyle="bold"
+            tools:text="@string/title_holder" />
 
         <TextView
             android:id="@+id/item_post_description"
@@ -73,6 +72,7 @@
             android:layout_toEndOf="@id/item_article_image"
             android:ellipsize="end"
             android:maxLines="2"
+            android:textColor="?android:textColorSecondary"
             tools:text="@string/desc_holder" />
 
         <TextView
@@ -82,9 +82,9 @@
             android:layout_below="@id/item_post_description"
             android:layout_marginTop="4dp"
             android:layout_toEndOf="@id/item_article_image"
-            android:textColor="@color/black"
             android:ellipsize="end"
             android:maxLines="1"
+            android:textColor="?android:textColorPrimary"
             tools:text="@string/author" />
 
     </LinearLayout>
