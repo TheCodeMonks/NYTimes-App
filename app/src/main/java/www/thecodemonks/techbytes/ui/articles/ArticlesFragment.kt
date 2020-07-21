@@ -31,6 +31,7 @@ import android.os.StrictMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -93,7 +94,10 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         // observe changes on topic change for list
         viewModel.currentTopic.observe(viewLifecycleOwner, Observer {
             article_rv.animate().alpha(0f)
-                .withStartAction { progress_view.animate().alpha(1f) }
+                .withStartAction {
+                    progress_view.isVisible = true
+                    progress_view.animate().alpha(1f)
+                }
                 .withEndAction {
                     viewModel.crawlFromNYTimes(it.toString())
                 }
@@ -105,6 +109,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             progress_view.animate().alpha(0f)
                 .withEndAction {
                     article_rv.animate().alpha(1f)
+                    progress_view.isVisible = false
                 }
         })
 
