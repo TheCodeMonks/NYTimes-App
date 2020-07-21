@@ -41,6 +41,7 @@ import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
+import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 
 
 class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
@@ -122,7 +123,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
         newsAdapter = NewsAdapter()
         bookmark_rv.apply {
             adapter = newsAdapter
-            layoutManager = LinearLayoutManager(activity)
+            addItemDecoration(SpacesItemDecorator(16))
         }
     }
 

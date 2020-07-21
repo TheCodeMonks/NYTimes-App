@@ -32,6 +32,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import kotlinx.android.synthetic.main.activity_base.*
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.Repo
@@ -47,7 +48,7 @@ class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-
+        setSupportActionBar(toolbar)
         // setup VMProviderFactory
         val repo = Repo(
             ArticleDatabase(this)

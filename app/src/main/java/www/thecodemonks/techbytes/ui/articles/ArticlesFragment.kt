@@ -31,11 +31,10 @@ import android.os.StrictMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_articles.*
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.model.Category
@@ -50,6 +49,7 @@ import www.thecodemonks.techbytes.utils.Constants.NY_SPACE
 import www.thecodemonks.techbytes.utils.Constants.NY_SPORTS
 import www.thecodemonks.techbytes.utils.Constants.NY_TECH
 import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
+import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 
 
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
@@ -88,15 +88,30 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         categoryAdapter = CategoryAdapter(category)
         category_rv.rootView.post {
             category_rv.adapter = categoryAdapter
-            category_rv.layoutManager =
-                LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+            category_rv.addItemDecoration(SpacesItemDecorator(16))
         }
 
         // observe changes on topic change for list
         viewModel.currentTopic.observe(viewLifecycleOwner, Observer {
-            startCrawlObserver(it.toString())
+            article_rv.animate().alpha(0f)
+                .withStartAction {
+                    progress_view.isVisible = true
+                    progress_view.animate().alpha(1f)
+                }
+                .withEndAction {
+                    viewModel.crawlFromNYTimes(it.toString())
+                }
         })
 
+        // observe the articles
+        viewModel.articles.observe(viewLifecycleOwner, Observer {
+            newsAdapter.differ.submitList(it)
+            progress_view.animate().alpha(0f)
+                .withEndAction {
+                    article_rv.animate().alpha(1f)
+                    progress_view.isVisible = false
+                }
+        })
 
         // onclick to select source & post value to liveData
         categoryAdapter.setOnItemClickListener {
@@ -118,18 +133,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
     }
 
-    private fun startCrawlObserver(url: String?) {
-        progress_view.visibility = View.VISIBLE
-        url?.let { currentTopic ->
-            viewModel.crawlFromNYTimes(currentTopic).observe(viewLifecycleOwner, Observer { list ->
-                newsAdapter.differ.submitList(list)
-                progress_view.visibility = View.GONE
-            })
-        }
-
-    }
-
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu, menu)
@@ -150,9 +153,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         newsAdapter = NewsAdapter()
         article_rv.apply {
             adapter = newsAdapter
-            layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
-            article_rv.visibility = View.VISIBLE
-
+            addItemDecoration(SpacesItemDecorator(16))
         }
     }
 

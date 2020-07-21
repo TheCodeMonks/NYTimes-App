@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * MIT License
   ~  *
@@ -25,11 +24,10 @@
   ~  */
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="www.thecodemonks.techbytes.ui.base.BaseActivity">
 
     <WebView
@@ -41,13 +39,10 @@
         android:id="@+id/btn_saved_article"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="30dp"
-        android:background="@color/design_default_color_primary"
-        app:backgroundTint="@color/design_default_color_primary"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="32dp"
         android:contentDescription="@string/app_name"
         android:src="@android:drawable/ic_input_add"
         android:tint="@color/white" />
 
-</RelativeLayout>
+</FrameLayout>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ /*
   ~  * MIT License
   ~  *
@@ -24,21 +25,7 @@
   ~  */
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bookmark_rootView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="www.thecodemonks.techbytes.ui.base.BaseActivity">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bookmark_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_post_article" />
-
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+<resources>
+    <color name="colorSurface">@color/black</color>
+    <color name="colorPrimary">@color/purple_200</color>
+</resources>
