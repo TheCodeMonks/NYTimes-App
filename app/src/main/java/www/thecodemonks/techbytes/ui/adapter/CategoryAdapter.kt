@@ -105,7 +105,7 @@ class CategoryAdapter(private val category: MutableList<Category>) :
                     item_category_title.setTextColor(
                         ContextCompat.getColor(
                             item_category_title.context,
-                            R.color.black
+                            R.color.categoryText
                         )
                     )
                     MyDrawableCompat.setColorFilter(

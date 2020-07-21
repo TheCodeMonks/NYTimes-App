@@ -28,4 +28,8 @@
 <resources>
     <color name="colorSurface">@color/black</color>
     <color name="colorPrimary">@color/purple_200</color>
+    <color name="colorOnSecondary">@color/white</color>
+    <color name="blue_smoke">#121212</color>
+    <color name="categoryText">#ffffff</color>
+
 </resources>

@@ -39,7 +39,7 @@ class NYTimes : Application() {
         val mode = if (isNight()) {
             AppCompatDelegate.MODE_NIGHT_YES
         } else {
-            AppCompatDelegate.MODE_NIGHT_NO
+            AppCompatDelegate.MODE_NIGHT_YES
         }
 
         AppCompatDelegate.setDefaultNightMode(mode)

@@ -34,7 +34,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue_smoke">#f3f7f9</color>
-    <color name="dark_chip_color">#121212</color>
+    <color name="categoryText">#000000</color>
 
 
     <color name="colorSurface">@color/white</color>
