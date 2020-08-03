@@ -27,7 +27,6 @@
 package www.thecodemonks.techbytes.ui.articles
 
 import android.os.Bundle
-import android.os.StrictMode
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -63,9 +62,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         super.onActivityCreated(savedInstanceState)
 
         setHasOptionsMenu(true)
-
-        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
-        StrictMode.setThreadPolicy(policy)
 
         // init article rv
         setUpArticleRV()

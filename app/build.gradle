@@ -73,7 +73,7 @@ android {
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -106,12 +106,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 
     // Coil-kt
-    implementation 'io.coil-kt:coil:0.9.5'
+    implementation 'io.coil-kt:coil:0.11.0'
 
     // JSoup for HTML parsing
     implementation 'org.jsoup:jsoup:1.12.1'
 
-    // Material Design Library for the RecyclerView
+    // Material Design Library for the RecyclerView & Design
     implementation 'com.google.android.material:material:1.1.0'
 
 
