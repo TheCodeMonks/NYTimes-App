@@ -31,5 +31,6 @@
     <string name="author">By Sanju S</string>
     <string name="bookmark">Bookmark</string>
     <string name="bookmarks_holder">Bookmarks</string>
+    <string name="no_bookmarks">No bookmarks yet</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
