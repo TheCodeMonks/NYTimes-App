@@ -59,7 +59,7 @@ class MyWorker(context: Context, params: WorkerParameters) : Worker(context, par
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(applicationContext, channelId)
             .setColor(ContextCompat.getColor(applicationContext, R.color.black))
-            .setSmallIcon(R.drawable.nytimes)
+            .setSmallIcon(R.drawable.ic_ny_notification_icon)
             .setContentTitle(title)
             .setContentText(description)
             .setAutoCancel(true)
