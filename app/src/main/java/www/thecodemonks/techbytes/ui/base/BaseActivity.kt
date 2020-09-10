@@ -32,12 +32,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy.KEEP
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import kotlinx.android.synthetic.main.activity_base.*
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModelProviderFactory
+import www.thecodemonks.techbytes.worker.MyWorker
+import java.util.concurrent.TimeUnit
 
 
 class BaseActivity : AppCompatActivity() {
@@ -60,14 +67,39 @@ class BaseActivity : AppCompatActivity() {
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(ArticleViewModel::class.java)
 
+        // setup workManager
+        initWorker()
+
         // init nav controller with back action button
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         NavigationUI.setupActionBarWithNavController(this, navController)
 
     }
 
+    private fun initWorker() {
+        // worker constraints
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+
+        // periodic worker for every 15 minutes
+        val notificationWorkRequest =
+            PeriodicWorkRequestBuilder<MyWorker>(15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .build()
+
+        // enqueue work
+        val workManager = WorkManager.getInstance(applicationContext)
+        workManager.enqueueUniquePeriodicWork(JOB_TAG, KEEP, notificationWorkRequest)
+
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         navController.navigateUp()
         return super.onSupportNavigateUp()
+    }
+
+    companion object {
+        const val JOB_TAG = "articlesWorkerTag"
     }
 }
