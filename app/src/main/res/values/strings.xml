@@ -33,4 +33,9 @@
     <string name="bookmarks_holder">Bookmarks</string>
     <string name="no_bookmarks">No bookmarks yet</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    Notification channel-->
+    <string name="default_notification_channel_id">1</string>
+    <string name="default_notification_channel_name">Ny Times</string>
+
 </resources>
