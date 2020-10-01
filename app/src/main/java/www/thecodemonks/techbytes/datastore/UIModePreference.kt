@@ -24,31 +24,17 @@
  *
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
-    ext.kotlin_version = "1.4.0"
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-alpha12'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.0"
+package www.thecodemonks.techbytes.datastore
 
+import android.content.Context
+import androidx.datastore.DataStore
+import androidx.datastore.preferences.Preferences
+import androidx.datastore.preferences.createDataStore
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
+class UIModePreference (context: Context) {
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
-}
+    private val dataStore: DataStore<Preferences> = context.createDataStore(
+        name = "ui_mode"
+    )
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }
