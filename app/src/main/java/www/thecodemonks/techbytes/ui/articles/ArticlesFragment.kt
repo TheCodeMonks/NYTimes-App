@@ -142,7 +142,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             val isChecked = viewModel.readDataStore.first()
             val item = menu.findItem(R.id.action_night_mode)
             item.isChecked = isChecked
-            setUIMode(isChecked)
+            setUIMode(item, isChecked)
         }
     }
 
@@ -156,20 +156,24 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
             R.id.action_night_mode -> {
                 item.isChecked = !item.isChecked
-                setUIMode(item.isChecked)
+                setUIMode(item, item.isChecked)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun setUIMode(isChecked: Boolean) {
+    private fun setUIMode(item: MenuItem, isChecked: Boolean) {
         if (isChecked) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             viewModel.saveToDataStore(true)
+            item.setIcon(R.drawable.ic_night)
+
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             viewModel.saveToDataStore(false)
+            item.setIcon(R.drawable.ic_day)
+
         }
     }
 
