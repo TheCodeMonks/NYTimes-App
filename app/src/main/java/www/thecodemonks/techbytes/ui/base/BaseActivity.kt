@@ -60,10 +60,10 @@ class BaseActivity : AppCompatActivity() {
         val repo = Repo(
             ArticleDatabase(this)
         )
-        val viewModelProviderFactory =
-            NewsViewModelProviderFactory(
-                repo
-            )
+
+        // Passing application to ViewModel for DataStore
+        val viewModelProviderFactory = NewsViewModelProviderFactory(this.application, repo)
+
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(ArticleViewModel::class.java)
 
