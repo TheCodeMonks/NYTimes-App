@@ -7,7 +7,7 @@
 
 ***Try latest NY Times app apk from below 👇***
 
-[![NY Times](https://img.shields.io/badge/NYTimes🌈-APK-black.svg?style=for-the-badge&logo=android)](https://github.com/TheCodeMonks/TechBytes/blob/master/apk/nytimes.apk)
+[![NY Times](https://img.shields.io/badge/NYTimes🌈-APK-black.svg?style=for-the-badge&logo=android)](https://github.com/TheCodeMonks/NYTimes-App/releases/download/v1.4.1/nytimes.apk)
 
 
 
