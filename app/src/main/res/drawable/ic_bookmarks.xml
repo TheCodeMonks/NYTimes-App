@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ /*
   ~  * MIT License
@@ -25,18 +24,23 @@
   ~  */
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_bookmark"
-        android:icon="@drawable/ic_bookmarks"
-        android:title="@string/bookmark"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_night_mode"
-        android:checkable="true"
-        android:icon="@drawable/ic_day"
-        android:title="@string/night_mode"
-        app:showAsAction="ifRoom" />
-
-</menu>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="20"
+    android:viewportHeight="20">
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M10.8337,5.8333C11.2757,5.8333 11.6996,6.0089 12.0122,6.3215C12.3247,6.634 12.5003,7.058 12.5003,7.5V17.5L8.3337,15L4.167,17.5V7.5C4.167,7.058 4.3426,6.634 4.6551,6.3215C4.9677,6.0089 5.3916,5.8333 5.8337,5.8333H10.8337Z"
+      android:strokeWidth="1.25"
+      android:strokeColor="@color/colorOnSecondary"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+  <path
+      android:fillColor="#00000000"
+      android:pathData="M7.7207,3.3333C7.8672,3.0796 8.078,2.869 8.3318,2.7227C8.5856,2.5764 8.8736,2.4996 9.1665,2.5H14.1665C14.6086,2.5 15.0325,2.6756 15.345,2.9882C15.6576,3.3007 15.8332,3.7246 15.8332,4.1667V14.1667L14.9999,13.6667"
+      android:strokeWidth="1.25"
+      android:strokeColor="@color/colorOnSecondary"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round" />
+</vector>
