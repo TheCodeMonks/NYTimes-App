@@ -30,11 +30,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_articles.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.model.Category
 import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
@@ -132,16 +136,40 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu, menu)
+
+        // Set the item state
+        lifecycleScope.launch {
+            val isChecked = viewModel.readDataStore.first()
+            val item = menu.findItem(R.id.action_night_mode)
+            item.isChecked = isChecked
+            setUIMode(isChecked)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         // Handle action bar item clicks here.
         return when (item.itemId) {
-            R.id.action_one -> {
+            R.id.action_bookmark -> {
                 findNavController().navigate(R.id.action_articlesFragment_to_bookmarksFragment)
                 true
             }
+
+            R.id.action_night_mode -> {
+                item.isChecked = !item.isChecked
+                setUIMode(item.isChecked)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setUIMode(isChecked: Boolean) {
+        if (isChecked) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            viewModel.saveToDataStore(true)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            viewModel.saveToDataStore(false)
         }
     }
 

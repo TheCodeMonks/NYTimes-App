@@ -24,11 +24,36 @@
  *
  */
 
-package www.thecodemonks.techbytes.utils
+package www.thecodemonks.techbytes.datastore
 
-import java.util.*
+import android.content.Context
+import androidx.datastore.DataStore
+import androidx.datastore.preferences.Preferences
+import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.edit
+import androidx.datastore.preferences.preferencesKey
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-fun isNight(): Boolean {
-    val currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    return (currentHour <= 7 || currentHour >= 18)
+class UIModePreference(context: Context) {
+
+    companion object {
+        private val UI_MODE_KEY = preferencesKey<Boolean>("ui_mode")
+    }
+
+    private val dataStore: DataStore<Preferences> = context.createDataStore(
+        name = "ui_mode_preference"
+    )
+
+    suspend fun saveToDataStore(isNightMode: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[UI_MODE_KEY] = isNightMode
+        }
+    }
+
+    val uiMode: Flow<Boolean> = dataStore.data
+        .map { preferences ->
+            val uiMode = preferences[UI_MODE_KEY] ?: false
+            uiMode
+        }
 }

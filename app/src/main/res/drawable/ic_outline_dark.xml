@@ -24,22 +24,13 @@
   ~  */
   -->
 
-<resources>
-    <string name="app_name">NY Times</string>
-    <string name="title_holder">Facebook Said Not to Consider Banning Political Ads</string>
-    <string name="desc_holder">The social network has been under intense pressure for allowing misinformation and hate speech to spread on its site.</string>
-    <string name="author">By Sanju S</string>
-
-    <!-- Menu -->
-    <string name="bookmark">Bookmark</string>
-    <string name="night_mode">Night Mode Switch</string>
-
-    <string name="bookmarks_holder">Bookmarks</string>
-    <string name="no_bookmarks">No bookmarks yet</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
-    <!--    Notification channel-->
-    <string name="default_notification_channel_id">1</string>
-    <string name="default_notification_channel_name">Ny Times</string>
-
-</resources>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="?attr/colorControlNormal">
+  <path
+      android:fillColor="@android:color/white"
+      android:pathData="M9.27,4.49c-1.63,7.54 3.75,12.41 7.66,13.8C15.54,19.38 13.81,20 12,20c-4.41,0 -8,-3.59 -8,-8C4,8.55 6.2,5.6 9.27,4.49M11.99,2.01C6.4,2.01 2,6.54 2,12c0,5.52 4.48,10 10,10c3.71,0 6.93,-2.02 8.66,-5.02c-7.51,-0.25 -12.09,-8.43 -8.32,-14.97C12.22,2.01 12.11,2.01 11.99,2.01L11.99,2.01z"/>
+</vector>
