@@ -27,21 +27,5 @@
 package www.thecodemonks.techbytes
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatDelegate
-import www.thecodemonks.techbytes.utils.isNight
 
-class NYTimes : Application() {
-
-    override fun onCreate() {
-        super.onCreate()
-
-        // check for ui mode & set accordingly
-        val mode = if (isNight()) {
-            AppCompatDelegate.MODE_NIGHT_YES
-        } else {
-            AppCompatDelegate.MODE_NIGHT_NO
-        }
-
-        AppCompatDelegate.setDefaultNightMode(mode)
-    }
-}
+class NYTimes : Application()

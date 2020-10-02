@@ -28,6 +28,8 @@ package www.thecodemonks.techbytes.ui.bookmarks
 
 import android.os.Bundle
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -45,8 +47,10 @@ import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 
 
 class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
+
     private lateinit var viewModel: ArticleViewModel
     private lateinit var newsAdapter: NewsAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -58,6 +62,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
         // get saved articles from room db
         viewModel.getSavedArticle().observe(viewLifecycleOwner, Observer {
+            no_bookmarks.visibility = if (it.isNullOrEmpty()) VISIBLE else GONE
             newsAdapter.differ.submitList(it)
         })
 

@@ -26,22 +26,28 @@
 
 package www.thecodemonks.techbytes.ui.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import www.thecodemonks.techbytes.datastore.UIModePreference
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.utils.Constants
 
 
-class ArticleViewModel(private val repo: Repo) : ViewModel() {
+class ArticleViewModel(application: Application, private val repo: Repo) :
+    AndroidViewModel(application) {
 
     private val _articles = MutableLiveData<List<Article>>()
     val articles: LiveData<List<Article>>
         get() = _articles
+
+    // DataStore
+    private val uiDataStore = UIModePreference(application)
 
     val currentTopic: MutableLiveData<String> by lazy {
         MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
@@ -64,6 +70,16 @@ class ArticleViewModel(private val repo: Repo) : ViewModel() {
     fun crawlFromNYTimes(url: String) {
         viewModelScope.launch(IO) {
             _articles.postValue(repo.crawlFromNYTimes(url))
+        }
+    }
+
+    // Get From DataStore
+    val readDataStore = uiDataStore.uiMode
+
+    // Save to DataStore
+    fun saveToDataStore(isNightMode: Boolean) {
+        viewModelScope.launch(IO) {
+            uiDataStore.saveToDataStore(isNightMode)
         }
     }
 

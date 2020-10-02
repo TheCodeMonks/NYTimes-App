@@ -26,15 +26,16 @@
 
 package www.thecodemonks.techbytes.ui.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import www.thecodemonks.techbytes.repo.Repo
 
 
-class NewsViewModelProviderFactory(private val repo: Repo) :
+class NewsViewModelProviderFactory(private val application: Application, private val repo: Repo) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ArticleViewModel(repo) as T
+        return ArticleViewModel(application, repo) as T
     }
 }

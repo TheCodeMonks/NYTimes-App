@@ -2,9 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_one"
+        android:id="@+id/action_bookmark"
         android:icon="@drawable/ic_baseline_bookmark"
         android:title="@string/bookmark"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_night_mode"
+        android:checkable="true"
+        android:icon="@drawable/ic_outline_dark"
+        android:title="@string/night_mode"
+        app:showAsAction="ifRoom" />
 
 </menu>

@@ -31,36 +31,49 @@
     android:layout_height="match_parent"
     tools:context="www.thecodemonks.techbytes.ui.base.BaseActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/article_rv"
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/parent_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?listPreferredItemHeightLarge"
-        android:orientation="vertical"
-        android:alpha="0"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_post_article" />
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/bottom_chips"
-        android:layout_width="match_parent"
-        android:layout_height="?listPreferredItemHeightLarge"
-        android:layout_gravity="bottom"
-        android:backgroundTint="?colorSurface"
-        app:cardElevation="4dp">
+        app:layoutDescription="@xml/fragment_articles_scene">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/category_rv"
+            android:id="@+id/article_rv"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="horizontal"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="?listPreferredItemHeightLarge"
+            android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_post_category" />
+            app:layout_constraintBottom_toTopOf="@+id/bottom_chips"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/item_post_article" />
 
-    </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/bottom_chips"
+            android:layout_width="match_parent"
+            android:layout_height="?listPreferredItemHeightLarge"
+            android:backgroundTint="?colorSurface"
+            app:cardElevation="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/category_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_post_category" />
+
+        </com.google.android.material.card.MaterialCardView>
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
     <ProgressBar
         android:id="@+id/progress_view"
