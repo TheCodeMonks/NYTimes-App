@@ -45,6 +45,7 @@ import android.view.animation.Transformation
 object Animations {
 
     fun fadeOutFadeIn(v: View, onFadeInStart: () -> Unit = {}) {
+
         val fadeOut = ObjectAnimator
             .ofFloat(v, View.ALPHA, 1f, 0f)
             .setDuration(200)

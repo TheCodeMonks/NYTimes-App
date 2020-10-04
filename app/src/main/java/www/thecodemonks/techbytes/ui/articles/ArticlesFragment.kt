@@ -135,8 +135,10 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             )
         }
 
+        var lastOnlineStatus = true // this flag is required to block showing of onlineStatus on startup
         viewModel.networkObserver.observe(this, Observer { isConnected ->
-            if (isResumed) {
+            if (lastOnlineStatus != isConnected) {
+                lastOnlineStatus = isConnected
                 if (isConnected) {
                     container_network_status.setOnlineBehaviour()
                 } else {
@@ -211,7 +213,8 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                     R.color.colorStatusConnected
                 )
             )
-            val onlineDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_on)
+            val onlineDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_on)
             text_network_status.setCompoundDrawablesWithIntrinsicBounds(
                 onlineDrawable,
                 null,
@@ -251,7 +254,8 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                     R.color.colorStatusNotConnected
                 )
             )
-            val onlineDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_off)
+            val onlineDrawable =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_off)
             text_network_status.setCompoundDrawablesWithIntrinsicBounds(
                 onlineDrawable,
                 null,
