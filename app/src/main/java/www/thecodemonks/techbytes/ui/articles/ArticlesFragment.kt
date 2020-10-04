@@ -136,7 +136,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         }
 
         var lastOnlineStatus = true // this flag is required to block showing of onlineStatus on startup
-        viewModel.networkObserver.observe(this, Observer { isConnected ->
+        viewModel.networkObserver.observe(viewLifecycleOwner, Observer { isConnected ->
             if (lastOnlineStatus != isConnected) {
                 lastOnlineStatus = isConnected
                 if (isConnected) {
