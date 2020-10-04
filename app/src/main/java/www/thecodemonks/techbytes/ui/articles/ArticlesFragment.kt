@@ -136,21 +136,15 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         }
 
         viewModel.networkObserver.observe(this, Observer { isConnected ->
-            Log.e("test", "recived : $isConnected")
-            if (isConnected) {
-                container_network_status.setOnlineBehaviour()
-            } else {
-                container_network_status.setOfflineBehaviour()
+            if (isResumed) {
+                if (isConnected) {
+                    container_network_status.setOnlineBehaviour()
+                } else {
+                    container_network_status.setOfflineBehaviour()
+                }
             }
         })
 
-        //todo remove
-        var toggle = true
-        button_test.setOnClickListener {
-            toggle = !toggle
-            Log.e("test", "changed : ${toggle}")
-            viewModel.networkManager._connectionStatusLiveData.value = toggle
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -217,6 +211,13 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                     R.color.colorStatusConnected
                 )
             )
+            val onlineDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_on)
+            text_network_status.setCompoundDrawablesWithIntrinsicBounds(
+                onlineDrawable,
+                null,
+                null,
+                null
+            )
             text_network_status.text = getString(R.string.text_connectivity)
         }
 
@@ -249,6 +250,13 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                     requireContext(),
                     R.color.colorStatusNotConnected
                 )
+            )
+            val onlineDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_off)
+            text_network_status.setCompoundDrawablesWithIntrinsicBounds(
+                onlineDrawable,
+                null,
+                null,
+                null
             )
             text_network_status.text = getString(R.string.text_no_connectivity)
         }

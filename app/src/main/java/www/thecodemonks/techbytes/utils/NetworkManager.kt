@@ -46,8 +46,7 @@ import androidx.lifecycle.MutableLiveData
  */
 class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
 
-    //todo private
-    val _connectionStatusLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private val _connectionStatusLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val observeConnectionStatus: LiveData<Boolean> = _connectionStatusLiveData
     private val appContext: Context = context.applicationContext
 

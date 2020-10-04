@@ -49,8 +49,7 @@ class ArticleViewModel(
     val articles: LiveData<List<Article>>
         get() = _articles
 
-    //todo private
-    val networkManager = NetworkManager(application)
+    private val networkManager = NetworkManager(application)
     val networkObserver = networkManager.observeConnectionStatus
 
     // DataStore
