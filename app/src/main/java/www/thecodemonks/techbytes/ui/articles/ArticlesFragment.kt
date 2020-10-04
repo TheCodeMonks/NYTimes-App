@@ -27,10 +27,14 @@
 package www.thecodemonks.techbytes.ui.articles
 
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -45,6 +49,7 @@ import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
+import www.thecodemonks.techbytes.utils.Animations
 import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
 import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
 import www.thecodemonks.techbytes.utils.Constants.NY_SCIENCE
@@ -130,7 +135,21 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             )
         }
 
+        viewModel.networkObserver.observe(this, Observer { isConnected ->
+            Log.e("test", "recived : $isConnected")
+            if (isConnected) {
+                container_network_status.setOnlineBehaviour()
+            } else {
+                container_network_status.setOfflineBehaviour()
+            }
+        })
 
+        var toggle = true
+        button_test.setOnClickListener {
+            toggle = !toggle
+            Log.e("test", "changed : ${toggle}")
+            viewModel.networkManager._connectionStatusLiveData.value = toggle
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -183,6 +202,70 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             adapter = newsAdapter
             addItemDecoration(SpacesItemDecorator(16))
         }
+    }
+
+
+    private val networkAutoDismissHandler = Handler()
+
+    private fun LinearLayout.setOnlineBehaviour() {
+
+        fun applyTheme() {
+            setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorStatusConnected
+                )
+            )
+            text_network_status.text = getString(R.string.text_connectivity)
+        }
+
+        if (!isVisible) {
+            //play expanding animation
+            Animations.expand(container_network_status)
+            applyTheme()
+        } else {
+            //play fade out and in animation
+            Animations.fadeOutFadeIn(text_network_status) {
+                //on fadeInStarted
+                applyTheme()
+            }
+        }
+
+        networkAutoDismissHandler.postDelayed({
+            if (viewModel.networkObserver.value == true) {
+                Animations.collapse(this)
+            }
+        }, 3000)
+
+    }
+
+    private fun LinearLayout.setOfflineBehaviour() {
+        networkAutoDismissHandler.removeCallbacksAndMessages(null)
+
+        fun applyTheme() {
+            setBackgroundColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorStatusNotConnected
+                )
+            )
+            text_network_status.text = getString(R.string.text_no_connectivity)
+        }
+
+
+        if (!isVisible) {
+            //play expanding animation
+            Animations.expand(container_network_status)
+            applyTheme()
+        } else {
+            //play fade out and in animation
+            Animations.fadeOutFadeIn(text_network_status) {
+                //on fadeInStarted
+                applyTheme()
+            }
+        }
+
+
     }
 
 }

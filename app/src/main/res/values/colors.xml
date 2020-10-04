@@ -45,4 +45,7 @@
     <color name="colorSecondaryVariant">@color/teal_700</color>
     <color name="colorOnSecondary">@color/black</color>
 
+    <color name="colorStatusConnected">#43A047</color>
+    <color name="colorStatusNotConnected">#D32F2F</color>
+
 </resources>

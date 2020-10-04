@@ -46,7 +46,8 @@ import androidx.lifecycle.MutableLiveData
  */
 class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
 
-    private val _connectionStatusLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    //todo private
+    val _connectionStatusLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val observeConnectionStatus: LiveData<Boolean> = _connectionStatusLiveData
     private val appContext: Context = context.applicationContext
 
@@ -66,12 +67,14 @@ class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
 
     override fun onAvailable(network: Network) {
         super.onAvailable(network)
-        _connectionStatusLiveData.postValue(true)
+        // todo uncomment
+        //_connectionStatusLiveData.postValue(true)
     }
 
     override fun onLost(network: Network) {
         super.onLost(network)
-        _connectionStatusLiveData.postValue(false)
+        // todo uncomment
+        //_connectionStatusLiveData.postValue(false)
     }
 
 
