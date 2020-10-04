@@ -44,7 +44,7 @@ import android.view.animation.Transformation
  */
 object Animations {
 
-    fun fadeOutFadeIn(v: View, onFadeInStart: () -> Unit) {
+    fun fadeOutFadeIn(v: View, onFadeInStart: () -> Unit = {}) {
         val fadeOut = ObjectAnimator
             .ofFloat(v, View.ALPHA, 1f, 0f)
             .setDuration(200)
@@ -68,6 +68,7 @@ object Animations {
         animatorSet.start()
 
     }
+
 
     fun collapse(view: View) {
         val initialHeight = view.measuredHeight

@@ -67,14 +67,12 @@ class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
 
     override fun onAvailable(network: Network) {
         super.onAvailable(network)
-        // todo uncomment
-        //_connectionStatusLiveData.postValue(true)
+        _connectionStatusLiveData.postValue(true)
     }
 
     override fun onLost(network: Network) {
         super.onLost(network)
-        // todo uncomment
-        //_connectionStatusLiveData.postValue(false)
+        _connectionStatusLiveData.postValue(false)
     }
 
 

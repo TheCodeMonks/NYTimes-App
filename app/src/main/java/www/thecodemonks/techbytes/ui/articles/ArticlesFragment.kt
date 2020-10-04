@@ -144,6 +144,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             }
         })
 
+        //todo remove
         var toggle = true
         button_test.setOnClickListener {
             toggle = !toggle
