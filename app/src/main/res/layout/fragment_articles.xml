@@ -52,65 +52,64 @@
             tools:text="@string/text_no_connectivity" />
     </LinearLayout>
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_articles"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
-            android:id="@+id/parent_layout"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutDescription="@xml/fragment_articles_scene"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_network_status">
+            android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/article_rv"
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/parent_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="?listPreferredItemHeightLarge"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/bottom_chips"
+                app:layoutDescription="@xml/fragment_articles_scene"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:listitem="@layout/item_post_article" />
-
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/bottom_chips"
-                android:layout_width="match_parent"
-                android:layout_height="?listPreferredItemHeightLarge"
-                android:backgroundTint="?colorSurface"
-                app:cardElevation="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/container_network_status">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/category_rv"
+                    android:id="@+id/article_rv"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:clipChildren="false"
-                    android:clipToPadding="false"
-                    android:orientation="horizontal"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="?listPreferredItemHeightLarge"
+                    android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_post_category" />
+                    app:layout_constraintBottom_toTopOf="@+id/bottom_chips"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:listitem="@layout/item_post_article" />
 
-            </com.google.android.material.card.MaterialCardView>
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/bottom_chips"
+                    android:layout_width="match_parent"
+                    android:layout_height="?listPreferredItemHeightLarge"
+                    android:backgroundTint="?colorSurface"
+                    app:cardElevation="4dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
 
-        </androidx.constraintlayout.motion.widget.MotionLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/category_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_post_category" />
 
-        <ProgressBar
-            android:id="@+id/progress_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="visible" />
+                </com.google.android.material.card.MaterialCardView>
 
-    </FrameLayout>
+            </androidx.constraintlayout.motion.widget.MotionLayout>
 
+        </FrameLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

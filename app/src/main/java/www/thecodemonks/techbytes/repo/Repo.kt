@@ -26,6 +26,7 @@
 
 package www.thecodemonks.techbytes.repo
 
+import android.util.Log
 import org.jsoup.Jsoup
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.model.Article
@@ -74,7 +75,6 @@ class Repo(private val db: ArticleDatabase) {
                 articles.add(article)
             }
         }
-
         return articles
     }
 

@@ -100,8 +100,9 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         viewModel.currentTopic.observe(viewLifecycleOwner, Observer {
             article_rv.animate().alpha(0f)
                 .withStartAction {
-                    progress_view.isVisible = true
-                    progress_view.animate().alpha(1f)
+                    if (viewModel.networkObserver.value == true){
+                        refresh_articles.isRefreshing = true
+                    }
                 }
                 .withEndAction {
                     viewModel.crawlFromNYTimes(it.toString())
@@ -110,12 +111,9 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
         // observe the articles
         viewModel.articles.observe(viewLifecycleOwner, Observer {
+            refresh_articles.isRefreshing = false
             newsAdapter.differ.submitList(it)
-            progress_view.animate().alpha(0f)
-                .withEndAction {
-                    article_rv.animate().alpha(1f)
-                    progress_view.isVisible = false
-                }
+            article_rv.animate().alpha(1f)
         })
 
         // onclick to select source & post value to liveData
@@ -135,17 +133,23 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             )
         }
 
-        var lastOnlineStatus = true // this flag is required to block showing of onlineStatus on startup
+        var lastOnlineStatus =
+            true // this flag is required to block showing of onlineStatus on startup
         viewModel.networkObserver.observe(viewLifecycleOwner, Observer { isConnected ->
             if (lastOnlineStatus != isConnected) {
                 lastOnlineStatus = isConnected
-                if (isConnected) {
-                    container_network_status.setOnlineBehaviour()
-                } else {
-                    container_network_status.setOfflineBehaviour()
-                }
+                container_network_status.applyNetworkStatusTheme(isConnected)
+                container_network_status.applyNetworkStatusAnimations(isConnected)
+                container_network_status.applyNetworkStatusVisibilityBehaviour(isConnected)
+                refresh_articles.isEnabled = isConnected
             }
         })
+
+        refresh_articles.setOnRefreshListener {
+            viewModel.reCrawlFromNYTimes {
+                refresh_articles.isRefreshing = true
+            }
+        }
 
     }
 
@@ -278,7 +282,62 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             }
         }
 
-
     }
+
+    fun LinearLayout.applyNetworkStatusTheme(isConnected: Boolean) {
+
+        setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                if (isConnected) R.color.colorStatusConnected else R.color.colorStatusNotConnected
+            )
+        )
+
+        val onlineDrawable =
+            ContextCompat.getDrawable(
+                requireContext(),
+                if (isConnected) R.drawable.ic_internet_on else R.drawable.ic_internet_off
+            )
+
+        text_network_status.setCompoundDrawablesWithIntrinsicBounds(
+            onlineDrawable,
+            null,
+            null,
+            null
+        )
+
+        text_network_status.text = if (isConnected) {
+            getString(R.string.text_connectivity)
+        } else {
+            getString(R.string.text_no_connectivity)
+        }
+    }
+
+    fun LinearLayout.applyNetworkStatusAnimations(isConnected: Boolean) {
+        if (!isVisible) {
+            //play expanding animation
+            Animations.expand(container_network_status)
+            applyNetworkStatusTheme(isConnected)
+        } else {
+            //play fade out and in animation
+            Animations.fadeOutFadeIn(text_network_status) {
+                //on fadeInStarted
+                applyNetworkStatusTheme(isConnected)
+            }
+        }
+    }
+
+    fun LinearLayout.applyNetworkStatusVisibilityBehaviour(isConnected: Boolean) {
+        if (isConnected) {
+            networkAutoDismissHandler.postDelayed({
+                if (viewModel.networkObserver.value == true) {
+                    Animations.collapse(this)
+                }
+            }, 3000)
+        } else {
+            networkAutoDismissHandler.removeCallbacksAndMessages(null)
+        }
+    }
+
 
 }
