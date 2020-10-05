@@ -27,6 +27,7 @@
 package www.thecodemonks.techbytes.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -73,10 +74,26 @@ class ArticleViewModel(
         repo.deleteArticle(article)
     }
 
+
+    private var currentQueryUrl = ""
+
     // crawl data from NY times
     fun crawlFromNYTimes(url: String) {
-        viewModelScope.launch(IO) {
-            _articles.postValue(repo.crawlFromNYTimes(url))
+        currentQueryUrl = url
+        if (networkObserver.value == true) {
+            viewModelScope.launch(IO) {
+                _articles.postValue(repo.crawlFromNYTimes(url))
+            }
+        }
+    }
+
+    fun reCrawlFromNYTimes(refreshFailed: () -> Unit = {}) {
+        if (networkObserver.value == true) {
+            viewModelScope.launch(IO) {
+                _articles.postValue(repo.crawlFromNYTimes(currentQueryUrl))
+            }
+        } else {
+            refreshFailed.invoke()
         }
     }
 
