@@ -75,7 +75,6 @@ class Repo(private val db: ArticleDatabase) {
                 articles.add(article)
             }
         }
-        Log.e("test","reCrawlFromNYTimes-completed")
         return articles
     }
 
