@@ -37,14 +37,20 @@ import www.thecodemonks.techbytes.datastore.UIModePreference
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.utils.Constants
+import www.thecodemonks.techbytes.utils.NetworkManager
 
 
-class ArticleViewModel(application: Application, private val repo: Repo) :
-    AndroidViewModel(application) {
+class ArticleViewModel(
+    application: Application,
+    private val repo: Repo,
+) : AndroidViewModel(application) {
 
     private val _articles = MutableLiveData<List<Article>>()
     val articles: LiveData<List<Article>>
         get() = _articles
+
+    private val networkManager = NetworkManager(application)
+    val networkObserver = networkManager.observeConnectionStatus
 
     // DataStore
     private val uiDataStore = UIModePreference(application)
@@ -52,6 +58,7 @@ class ArticleViewModel(application: Application, private val repo: Repo) :
     val currentTopic: MutableLiveData<String> by lazy {
         MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
     }
+
 
     // save article
     fun upsertArticle(article: Article) = viewModelScope.launch {
