@@ -35,12 +35,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_article_details.*
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.base.BaseActivity
@@ -50,8 +46,8 @@ import www.thecodemonks.techbytes.utils.Constants
 
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
     private lateinit var viewModel: ArticleViewModel
-    val args: ArticleDetailsFragmentArgs by navArgs()
-    private var completeUrl:String? = null
+    private val args: ArticleDetailsFragmentArgs by navArgs()
+    private var completeUrl: String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -99,7 +95,9 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
             R.id.action_share -> {
                 val sendIntent: Intent = Intent().apply {
                     action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT,completeUrl)
+                    putExtra(Intent.EXTRA_TEXT, completeUrl)
+                    putExtra(Intent.EXTRA_TITLE, "NYTimes Article")
+
                     type = "text/plain"
                 }
                 val shareIntent = Intent.createChooser(sendIntent, null)
