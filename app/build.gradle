@@ -112,7 +112,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
 
     // Coil-kt
-    implementation 'io.coil-kt:coil:0.11.0'
+    implementation 'io.coil-kt:coil:0.13.0'
 
     // JSoup for HTML parsing
     implementation 'org.jsoup:jsoup:1.13.1'
