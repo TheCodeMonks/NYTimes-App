@@ -26,7 +26,6 @@
 
 package www.thecodemonks.techbytes.ui.details
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -34,6 +33,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_article_details.*
@@ -46,7 +46,7 @@ import www.thecodemonks.techbytes.utils.Constants
 
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
     private lateinit var viewModel: ArticleViewModel
-    private val args: ArticleDetailsFragmentArgs by navArgs()
+    val args: ArticleDetailsFragmentArgs by navArgs()
     private var completeUrl: String? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -93,15 +93,20 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
         // Handle action bar item clicks here.
         return when (item.itemId) {
             R.id.action_share -> {
-                val sendIntent: Intent = Intent().apply {
-                    action = Intent.ACTION_SEND
-                    putExtra(Intent.EXTRA_TEXT, completeUrl)
-                    putExtra(Intent.EXTRA_TITLE, "NYTimes Article")
+                val shareMsg = getString(
+                    R.string.share_message,
+                    args.article.title,
+                    completeUrl
+                )
 
-                    type = "text/plain"
+                val intent = ShareCompat.IntentBuilder.from(requireActivity())
+                    .setType("text/plain")
+                    .setText(shareMsg)
+                    .intent
+
+                if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                    startActivity(intent)
                 }
-                val shareIntent = Intent.createChooser(sendIntent, null)
-                startActivity(shareIntent)
                 true
             }
             else -> super.onOptionsItemSelected(item)

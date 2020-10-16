@@ -30,6 +30,9 @@
     <string name="desc_holder">The social network has been under intense pressure for allowing misinformation and hate speech to spread on its site.</string>
     <string name="author">By Sanju S</string>
 
+    <!-- Share article -->
+    <string name="share_message">\"%s\"\n\n source: %s. \n\nVisit: https://github.com/TheCodeMonks/NYTimes-App</string>
+
     <!-- Menu -->
     <string name="bookmark">Bookmark</string>
     <string name="night_mode">Night Mode Switch</string>
