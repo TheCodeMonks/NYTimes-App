@@ -34,7 +34,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.flow.first
@@ -104,8 +103,27 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             binding.categoryRv.addItemDecoration(SpacesItemDecorator(16))
         }
 
+        observeArticles()
+        observeTopics()
+        observeNetworkConnection()
+        categoryItemOnClick()
+        newItemOnClick()
+        swipeToRefreshArticles()
+
+
+    }
+
+    private fun swipeToRefreshArticles() {
+        binding.refreshArticles.setOnRefreshListener {
+            viewModel.reCrawlFromNYTimes {
+                binding.refreshArticles.isRefreshing = true
+            }
+        }
+    }
+
+    private fun observeTopics() {
         // observe changes on topic change for list
-        viewModel.currentTopic.observe(viewLifecycleOwner, Observer {
+        viewModel.currentTopic.observe(viewLifecycleOwner) {
             binding.articleRv.animate().alpha(0f)
                 .withStartAction {
                     if (viewModel.networkObserver.value == true) {
@@ -115,21 +133,10 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                 .withEndAction {
                     viewModel.crawlFromNYTimes(it.toString())
                 }
-        })
-
-        // observe the articles
-        viewModel.articles.observe(viewLifecycleOwner, Observer {
-            binding.refreshArticles.isRefreshing = false
-            newsAdapter.differ.submitList(it)
-            binding.articleRv.animate().alpha(1f)
-        })
-
-        // onclick to select source & post value to liveData
-        categoryAdapter.setOnItemClickListener {
-            viewModel.currentTopic.value = it.source
         }
+    }
 
-
+    private fun newItemOnClick() {
         // pass bundle onclick
         newsAdapter.setOnItemClickListener { article ->
             val bundle = Bundle().apply {
@@ -140,10 +147,19 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                 bundle
             )
         }
+    }
 
+    private fun categoryItemOnClick() {
+        // onclick to select source & post value to liveData
+        categoryAdapter.setOnItemClickListener {
+            viewModel.currentTopic.value = it.source
+        }
+    }
+
+    private fun observeNetworkConnection() {
         var lastOnlineStatus =
             true // this flag is required to block showing of onlineStatus on startup
-        viewModel.networkObserver.observe(viewLifecycleOwner, Observer { isConnected ->
+        viewModel.networkObserver.observe(viewLifecycleOwner) { isConnected ->
             if (lastOnlineStatus != isConnected) {
                 lastOnlineStatus = isConnected
                 binding.containerNetworkStatus.applyNetworkStatusTheme(isConnected)
@@ -151,14 +167,16 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                 binding.containerNetworkStatus.applyNetworkStatusVisibilityBehaviour(isConnected)
                 binding.refreshArticles.isEnabled = isConnected
             }
-        })
-
-        binding.refreshArticles.setOnRefreshListener {
-            viewModel.reCrawlFromNYTimes {
-                binding.refreshArticles.isRefreshing = true
-            }
         }
+    }
 
+    private fun observeArticles() {
+        // observe the articles
+        viewModel.articles.observe(viewLifecycleOwner) {
+            binding.refreshArticles.isRefreshing = false
+            newsAdapter.differ.submitList(it)
+            binding.articleRv.animate().alpha(1f)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -321,17 +339,17 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         }
     }
 
-   private fun LinearLayout.applyNetworkStatusAnimations(isConnected: Boolean) {
-       if (!isVisible) {
-           //play expanding animation
-           Animations.expand(binding.containerNetworkStatus)
-           applyNetworkStatusTheme(isConnected)
-       } else {
-           //play fade out and in animation
-           Animations.fadeOutFadeIn(binding.textNetworkStatus) {
-               //on fadeInStarted
-               applyNetworkStatusTheme(isConnected)
-           }
+    private fun LinearLayout.applyNetworkStatusAnimations(isConnected: Boolean) {
+        if (!isVisible) {
+            //play expanding animation
+            Animations.expand(binding.containerNetworkStatus)
+            applyNetworkStatusTheme(isConnected)
+        } else {
+            //play fade out and in animation
+            Animations.fadeOutFadeIn(binding.textNetworkStatus) {
+                //on fadeInStarted
+                applyNetworkStatusTheme(isConnected)
+            }
         }
     }
 
