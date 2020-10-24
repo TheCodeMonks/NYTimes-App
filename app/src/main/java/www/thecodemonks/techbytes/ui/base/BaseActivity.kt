@@ -30,7 +30,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy.KEEP
@@ -71,7 +71,9 @@ class BaseActivity : AppCompatActivity() {
         initWorker()
 
         // init nav controller with back action button
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
         NavigationUI.setupActionBarWithNavController(this, navController)
 
     }

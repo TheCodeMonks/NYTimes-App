@@ -28,7 +28,6 @@ package www.thecodemonks.techbytes.ui.articles
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -313,21 +312,21 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         }
     }
 
-    fun LinearLayout.applyNetworkStatusAnimations(isConnected: Boolean) {
-        if (!isVisible) {
-            //play expanding animation
-            Animations.expand(container_network_status)
-            applyNetworkStatusTheme(isConnected)
-        } else {
-            //play fade out and in animation
-            Animations.fadeOutFadeIn(text_network_status) {
-                //on fadeInStarted
-                applyNetworkStatusTheme(isConnected)
-            }
+   private fun LinearLayout.applyNetworkStatusAnimations(isConnected: Boolean) {
+       if (!isVisible) {
+           //play expanding animation
+           Animations.expand(container_network_status)
+           applyNetworkStatusTheme(isConnected)
+       } else {
+           //play fade out and in animation
+           Animations.fadeOutFadeIn(text_network_status) {
+               //on fadeInStarted
+               applyNetworkStatusTheme(isConnected)
+           }
         }
     }
 
-    fun LinearLayout.applyNetworkStatusVisibilityBehaviour(isConnected: Boolean) {
+    private fun LinearLayout.applyNetworkStatusVisibilityBehaviour(isConnected: Boolean) {
         if (isConnected) {
             networkAutoDismissHandler.postDelayed({
                 if (viewModel.networkObserver.value == true) {
