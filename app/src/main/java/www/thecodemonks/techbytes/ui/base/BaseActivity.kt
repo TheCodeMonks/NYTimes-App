@@ -37,8 +37,8 @@ import androidx.work.ExistingPeriodicWorkPolicy.KEEP
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import kotlinx.android.synthetic.main.activity_base.*
 import www.thecodemonks.techbytes.R
+import www.thecodemonks.techbytes.databinding.ActivityBaseBinding
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
@@ -54,8 +54,10 @@ class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base)
-        setSupportActionBar(toolbar)
+        val binding = ActivityBaseBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
         // setup VMProviderFactory
         val repo = Repo(
             ArticleDatabase(this)
