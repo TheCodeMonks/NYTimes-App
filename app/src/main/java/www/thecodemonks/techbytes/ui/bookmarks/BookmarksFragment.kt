@@ -27,18 +27,18 @@
 package www.thecodemonks.techbytes.ui.bookmarks
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_bookmarks.*
 import www.thecodemonks.techbytes.R
+import www.thecodemonks.techbytes.databinding.FragmentBookmarksBinding
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
@@ -50,6 +50,17 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
     private lateinit var viewModel: ArticleViewModel
     private lateinit var newsAdapter: NewsAdapter
+    private lateinit var _binding: FragmentBookmarksBinding
+    private val binding get() = _binding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentBookmarksBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,10 +72,10 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
         viewModel = (activity as BaseActivity).viewModel
 
         // get saved articles from room db
-        viewModel.getSavedArticle().observe(viewLifecycleOwner, Observer {
-            no_bookmarks.visibility = if (it.isNullOrEmpty()) VISIBLE else GONE
+        viewModel.getSavedArticle().observe(viewLifecycleOwner) {
+            binding.noBookmarks.visibility = if (it.isNullOrEmpty()) VISIBLE else GONE
             newsAdapter.differ.submitList(it)
-        })
+        }
 
         // init item touch callback for swipe action
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
@@ -93,7 +104,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
                 viewModel.deleteArticle(article)
                 Snackbar.make(
-                    bookmark_rootView,
+                    binding.bookmarkRootView,
                     "Article deleted successfully",
                     Snackbar.LENGTH_LONG
                 )
@@ -108,7 +119,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
         // attach swipe callback to rv
         ItemTouchHelper(itemTouchHelperCallback).apply {
-            attachToRecyclerView(bookmark_rv)
+            attachToRecyclerView(binding.bookmarkRv)
         }
 
         newsAdapter.setOnItemClickListener { article ->
@@ -126,7 +137,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
     private fun setUpRV() {
         newsAdapter = NewsAdapter()
-        bookmark_rv.apply {
+        binding.bookmarkRv.apply {
             adapter = newsAdapter
             addItemDecoration(SpacesItemDecorator(16))
         }
