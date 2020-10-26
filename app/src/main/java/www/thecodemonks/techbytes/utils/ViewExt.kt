@@ -24,8 +24,15 @@
  *
  */
 
-package www.thecodemonks.techbytes
+package www.thecodemonks.techbytes.utils
 
-import android.app.Application
+import android.view.View
 
-class NYTimes : Application()
+
+fun View.show() {
+    visibility = View.VISIBLE
+}
+
+fun View.hide() {
+    visibility = View.GONE
+}

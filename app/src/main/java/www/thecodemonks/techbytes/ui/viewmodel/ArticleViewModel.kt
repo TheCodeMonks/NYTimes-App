@@ -27,7 +27,6 @@
 package www.thecodemonks.techbytes.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -59,7 +58,6 @@ class ArticleViewModel(
     val currentTopic: MutableLiveData<String> by lazy {
         MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
     }
-
 
     // save article
     fun upsertArticle(article: Article) = viewModelScope.launch {
@@ -107,7 +105,7 @@ class ArticleViewModel(
         }
     }
 
-
+    // set default topic when opening
     private fun <T : Any?> MutableLiveData<T>.defaultTopic(initialValue: T) =
         apply { setValue(initialValue) }
 
