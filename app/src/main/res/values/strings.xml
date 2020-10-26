@@ -49,5 +49,7 @@
     <string name="text_connectivity">You\'re back online</string>
     <string name="share_article">Share Article</string>
     <string name="successfully_saved">Article saved successfully!</string>
+    <string name="text_empty_state_title">Oops!, It\'s Empty</string>
+    <string name="text_empty_state_description">There are no bookmarks found right now</string>
 
 </resources>

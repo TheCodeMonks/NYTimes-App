@@ -24,41 +24,43 @@
   ~  */
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/bookmark_rootView"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/empty_state_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="www.thecodemonks.techbytes.ui.base.BaseActivity">
+    android:gravity="center">
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <ImageView
+        android:id="@+id/empty_state_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/fragment_bookmarks_scene">
+        android:layout_height="250dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_empty" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bookmark_rv"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_post_article" />
-
-    </androidx.constraintlayout.motion.widget.MotionLayout>
-
-
-    <ViewStub
-        android:id="@+id/emptyStateLayout"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/empty_state_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout="@layout/content_empty_state_layout"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_below="@id/empty_state_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:fontFamily="@font/gilroybold"
+        android:gravity="center_horizontal"
+        android:text="@string/text_empty_state_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textColor="?android:textColorPrimary" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/empty_state_description"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/empty_state_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:text="@string/text_empty_state_description"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="?android:textColorPrimary" />
+
+</RelativeLayout>

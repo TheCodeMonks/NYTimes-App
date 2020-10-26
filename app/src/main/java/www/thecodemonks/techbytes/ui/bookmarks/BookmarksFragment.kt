@@ -29,8 +29,6 @@ package www.thecodemonks.techbytes.ui.bookmarks
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -44,6 +42,8 @@ import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.SpacesItemDecorator
+import www.thecodemonks.techbytes.utils.hide
+import www.thecodemonks.techbytes.utils.show
 
 
 class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
@@ -73,7 +73,9 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
         // get saved articles from room db
         viewModel.getSavedArticle().observe(viewLifecycleOwner) {
-            binding.noBookmarks.visibility = if (it.isNullOrEmpty()) VISIBLE else GONE
+            binding.emptyStateLayout.run {
+                if (it.isNullOrEmpty()) show() else hide()
+            }
             newsAdapter.differ.submitList(it)
         }
 
@@ -131,9 +133,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
                 bundle
             )
         }
-
     }
-
 
     private fun setUpRV() {
         newsAdapter = NewsAdapter()
