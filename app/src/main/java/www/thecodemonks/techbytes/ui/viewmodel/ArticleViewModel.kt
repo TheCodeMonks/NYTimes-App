@@ -27,11 +27,7 @@
 package www.thecodemonks.techbytes.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.datastore.UIModePreference
@@ -60,14 +56,13 @@ class ArticleViewModel(
         MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
     }
 
-
     // save article
     fun upsertArticle(article: Article) = viewModelScope.launch {
         repo.upsertArticle(article)
     }
 
     // get saved article
-    fun getSavedArticle() = repo.getSavedArticle()
+    fun getSavedArticle() = repo.getSavedArticle().asLiveData()
 
     // save article
     fun deleteArticle(article: Article) = viewModelScope.launch {
@@ -107,7 +102,7 @@ class ArticleViewModel(
         }
     }
 
-
+    // set default topic when opening
     private fun <T : Any?> MutableLiveData<T>.defaultTopic(initialValue: T) =
         apply { setValue(initialValue) }
 

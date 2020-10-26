@@ -24,27 +24,8 @@
  *
  */
 
-package www.thecodemonks.techbytes.db
+package www.thecodemonks.techbytes.app
 
-import androidx.room.*
-import kotlinx.coroutines.flow.Flow
-import www.thecodemonks.techbytes.model.Article
+import android.app.Application
 
-
-@Dao
-interface ArticleDao {
-
-    // insert or update article
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun upsert(article: Article)
-
-    // get all article from db
-    @Query("SELECT * FROM article")
-    fun getSavedArticle(): Flow<List<Article>>
-
-
-    // delete article from db
-    @Delete
-    suspend fun deleteArticle(article: Article)
-
-}
+class NYTimes : Application()
