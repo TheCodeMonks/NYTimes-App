@@ -26,8 +26,8 @@
 
 package www.thecodemonks.techbytes.db
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import www.thecodemonks.techbytes.model.Article
 
 
@@ -40,7 +40,7 @@ interface ArticleDao {
 
     // get all article from db
     @Query("SELECT * FROM article")
-    fun getSavedArticle(): LiveData<List<Article>>
+    fun getSavedArticle(): Flow<List<Article>>
 
 
     // delete article from db

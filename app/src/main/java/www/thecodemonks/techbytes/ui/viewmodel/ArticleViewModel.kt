@@ -27,10 +27,7 @@
 package www.thecodemonks.techbytes.ui.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.datastore.UIModePreference
@@ -65,7 +62,7 @@ class ArticleViewModel(
     }
 
     // get saved article
-    fun getSavedArticle() = repo.getSavedArticle()
+    fun getSavedArticle() = repo.getSavedArticle().asLiveData()
 
     // save article
     fun deleteArticle(article: Article) = viewModelScope.launch {
