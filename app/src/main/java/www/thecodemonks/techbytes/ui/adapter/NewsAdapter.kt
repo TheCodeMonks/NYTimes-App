@@ -34,7 +34,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
 import coil.transform.RoundedCornersTransformation
-import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.ItemPostArticleBinding
 import www.thecodemonks.techbytes.model.Article
 
