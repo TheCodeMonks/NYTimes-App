@@ -43,7 +43,7 @@ import www.thecodemonks.techbytes.utils.Constants
 
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
     private lateinit var viewModel: ArticleViewModel
-    val args: ArticleDetailsFragmentArgs by navArgs()
+    private val args: ArticleDetailsFragmentArgs by navArgs()
     private var completeUrl: String? = null
     private lateinit var _binding: FragmentArticleDetailsBinding
     private val binding get() = _binding

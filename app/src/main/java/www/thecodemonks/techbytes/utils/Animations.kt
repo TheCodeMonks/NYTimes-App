@@ -61,11 +61,11 @@ object Animations {
             }
         })
 
-        val animatorSet = AnimatorSet();
+        val animatorSet = AnimatorSet()
         animatorSet.playSequentially(
             fadeOut,
             fadeIn
-        );
+        )
         animatorSet.start()
 
     }
