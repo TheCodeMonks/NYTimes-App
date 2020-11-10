@@ -56,9 +56,7 @@ class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
             connectivityManager.registerNetworkCallbackCompact(this)
             val connectionStatus = connectivityManager.allNetworks.any { network ->
                 val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
-                val isConnected =
-                    networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-                return@any isConnected
+                return@any networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
             }
             _connectionStatusLiveData.value = connectionStatus
         }
