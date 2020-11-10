@@ -32,7 +32,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
 import coil.transform.RoundedCornersTransformation
 import www.thecodemonks.techbytes.databinding.ItemPostArticleBinding
 import www.thecodemonks.techbytes.model.Article
@@ -52,7 +52,8 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
 
     val differ = AsyncListDiffer(this, differCallback)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsVH {
-        val binding = ItemPostArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemPostArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NewsVH(binding)
     }
 
@@ -65,7 +66,7 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
         val item = differ.currentList[position]
         holder.binding.apply {
 
-            if (item.title.isNullOrBlank() || item.description.isNullOrBlank() || item.image.isNullOrBlank()) {
+            if (item.title.isBlank() || item.description.isNullOrBlank() || item.image.isNullOrBlank()) {
 
                 itemArticleTitle.visibility = View.GONE
                 itemPostDescription.visibility = View.GONE
