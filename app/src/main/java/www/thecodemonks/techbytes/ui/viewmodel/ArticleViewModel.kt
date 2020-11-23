@@ -72,6 +72,7 @@ class ArticleViewModel(
 
     private var currentQueryUrl = ""
 
+
     // crawl data from NY times
     fun crawlFromNYTimes(url: String) {
         currentQueryUrl = url
