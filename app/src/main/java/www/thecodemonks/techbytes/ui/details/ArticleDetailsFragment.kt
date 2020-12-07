@@ -52,7 +52,7 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentArticleDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }

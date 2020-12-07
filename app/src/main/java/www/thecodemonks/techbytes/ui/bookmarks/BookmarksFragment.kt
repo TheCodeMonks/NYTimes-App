@@ -57,7 +57,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentBookmarksBinding.inflate(inflater, container, false)
         return binding.root
     }
