@@ -42,10 +42,9 @@ import www.thecodemonks.techbytes.databinding.ActivityBaseBinding
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
-import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModelProviderFactory
+import www.thecodemonks.techbytes.ui.viewmodel.ViewModelProviderFactory
 import www.thecodemonks.techbytes.worker.MyWorker
 import java.util.concurrent.TimeUnit
-
 
 class BaseActivity : AppCompatActivity() {
 
@@ -64,7 +63,7 @@ class BaseActivity : AppCompatActivity() {
         )
 
         // Passing application to ViewModel for DataStore
-        val viewModelProviderFactory = NewsViewModelProviderFactory(this.application, repo)
+        val viewModelProviderFactory = ViewModelProviderFactory(this.application, repo)
 
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(ArticleViewModel::class.java)
@@ -77,7 +76,6 @@ class BaseActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupActionBarWithNavController(this, navController)
-
     }
 
     private fun initWorker() {
@@ -95,7 +93,6 @@ class BaseActivity : AppCompatActivity() {
         // enqueue work
         val workManager = WorkManager.getInstance(applicationContext)
         workManager.enqueueUniquePeriodicWork(JOB_TAG, KEEP, notificationWorkRequest)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {

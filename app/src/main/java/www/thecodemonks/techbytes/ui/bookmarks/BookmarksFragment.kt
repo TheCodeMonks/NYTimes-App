@@ -45,7 +45,6 @@ import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 import www.thecodemonks.techbytes.utils.hide
 import www.thecodemonks.techbytes.utils.show
 
-
 class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
     private lateinit var viewModel: ArticleViewModel
@@ -65,7 +64,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //setup rv
+        // setup rv
         setUpRV()
 
         // init viewModel
@@ -142,5 +141,4 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
             addItemDecoration(SpacesItemDecorator(16))
         }
     }
-
 }

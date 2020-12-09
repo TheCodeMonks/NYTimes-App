@@ -73,12 +73,10 @@ class CategoryAdapter(private val category: MutableList<Category>) :
                     if (selectedItem == position) {
                         notifyItemChanged(position)
                         return@setOnClickListener
-
                     }
 
                     selectedItem = position
                     notifyDataSetChanged()
-
                 }
             }
 
@@ -96,7 +94,6 @@ class CategoryAdapter(private val category: MutableList<Category>) :
                         itemCategoryTitle.background,
                         ContextCompat.getColor(root.context, R.color.design_default_color_primary)
                     )
-
                 }
                 else -> {
                     itemCategoryTitle.setTextColor(
@@ -109,21 +106,16 @@ class CategoryAdapter(private val category: MutableList<Category>) :
                         itemCategoryTitle.background,
                         ContextCompat.getColor(root.context, R.color.blue_smoke)
                     )
-
                 }
             }
-
         }
-
     }
-
 
     // on item click listener
     private var onItemClickListener: ((Category) -> Unit)? = null
     fun setOnItemClickListener(listener: (Category) -> Unit) {
         onItemClickListener = listener
     }
-
 
     // check if android version is greater than Q -> color filter else use set color filter
     object MyDrawableCompat {
@@ -135,5 +127,4 @@ class CategoryAdapter(private val category: MutableList<Category>) :
             }
         }
     }
-
 }

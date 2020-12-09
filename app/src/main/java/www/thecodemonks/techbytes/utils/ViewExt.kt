@@ -28,7 +28,6 @@ package www.thecodemonks.techbytes.utils
 
 import android.view.View
 
-
 fun View.show() {
     visibility = View.VISIBLE
 }

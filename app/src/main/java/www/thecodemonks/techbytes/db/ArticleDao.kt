@@ -30,7 +30,6 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import www.thecodemonks.techbytes.model.Article
 
-
 @Dao
 interface ArticleDao {
 
@@ -42,9 +41,7 @@ interface ArticleDao {
     @Query("SELECT * FROM article")
     fun getSavedArticle(): Flow<List<Article>>
 
-
     // delete article from db
     @Delete
     suspend fun deleteArticle(article: Article)
-
 }

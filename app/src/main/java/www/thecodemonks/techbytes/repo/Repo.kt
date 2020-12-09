@@ -62,7 +62,10 @@ class Repo(private val db: ArticleDatabase) {
             val source = item.attr("href")
 
             // check for null content
-            if (!image.isNullOrEmpty() || !title.isNullOrEmpty() || !description.isNullOrEmpty() || !author.isNullOrEmpty() || !source.isNullOrEmpty()) {
+            if (!image.isNullOrEmpty() || !title.isNullOrEmpty() ||
+                !description.isNullOrEmpty() || !author.isNullOrEmpty() ||
+                !source.isNullOrEmpty()
+            ) {
                 val article = Article(
                     title,
                     description,
@@ -76,6 +79,4 @@ class Repo(private val db: ArticleDatabase) {
         }
         return articles
     }
-
-
 }
