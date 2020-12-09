@@ -36,7 +36,6 @@ import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.utils.Constants
 import www.thecodemonks.techbytes.utils.NetworkManager
 
-
 class ArticleViewModel(
     application: Application,
     private val repo: Repo,
@@ -69,9 +68,7 @@ class ArticleViewModel(
         repo.deleteArticle(article)
     }
 
-
     private var currentQueryUrl = ""
-
 
     // crawl data from NY times
     fun crawlFromNYTimes(url: String) {
@@ -106,5 +103,4 @@ class ArticleViewModel(
     // set default topic when opening
     private fun <T : Any?> MutableLiveData<T>.defaultTopic(initialValue: T) =
         apply { setValue(initialValue) }
-
 }

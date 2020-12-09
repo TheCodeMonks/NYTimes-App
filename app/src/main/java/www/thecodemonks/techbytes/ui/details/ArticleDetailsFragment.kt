@@ -40,7 +40,6 @@ import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants
 
-
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
     private lateinit var viewModel: ArticleViewModel
     private val args: ArticleDetailsFragmentArgs by navArgs()

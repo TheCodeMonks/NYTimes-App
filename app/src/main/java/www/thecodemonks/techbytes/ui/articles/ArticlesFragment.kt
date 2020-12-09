@@ -57,7 +57,6 @@ import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 import www.thecodemonks.techbytes.utils.hide
 import www.thecodemonks.techbytes.utils.show
 
-
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
     private lateinit var viewModel: ArticleViewModel
@@ -202,12 +201,10 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             viewModel.saveToDataStore(true)
             item.setIcon(R.drawable.ic_night)
-
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             viewModel.saveToDataStore(false)
             item.setIcon(R.drawable.ic_day)
-
         }
     }
 
@@ -241,11 +238,13 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                     .alpha(1f)
                     .setStartDelay(ANIMATION_DURATION)
                     .setDuration(ANIMATION_DURATION)
-                    .setListener(object : AnimatorListenerAdapter() {
-                        override fun onAnimationEnd(animation: Animator) {
-                            hide()
+                    .setListener(
+                        object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                hide()
+                            }
                         }
-                    })
+                    )
                     .start()
             }
         }

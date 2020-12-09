@@ -37,7 +37,6 @@ import coil.transform.RoundedCornersTransformation
 import www.thecodemonks.techbytes.databinding.ItemPostArticleBinding
 import www.thecodemonks.techbytes.model.Article
 
-
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
 
     private val differCallback = object : DiffUtil.ItemCallback<Article>() {
@@ -66,13 +65,14 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
         val item = differ.currentList[position]
         holder.binding.apply {
 
-            if (item.title.isBlank() || item.description.isNullOrBlank() || item.image.isNullOrBlank()) {
+            if (item.title.isBlank() || item.description.isNullOrBlank() ||
+                item.image.isNullOrBlank()
+            ) {
 
                 itemArticleTitle.visibility = View.GONE
                 itemPostDescription.visibility = View.GONE
                 itemPostAuthor.visibility = View.GONE
                 itemArticleImage.visibility = View.GONE
-
             } else {
                 itemArticleTitle.text = item.title
                 itemPostDescription.text = item.description
@@ -95,18 +95,14 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
             holder.itemView.setOnClickListener {
                 onItemClickListener?.let { it(item) }
             }
-
         }
-
     }
 
     inner class NewsVH(val binding: ItemPostArticleBinding) : RecyclerView.ViewHolder(binding.root)
-
 
     // on item click listener
     private var onItemClickListener: ((Article) -> Unit)? = null
     fun setOnItemClickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
     }
-
 }

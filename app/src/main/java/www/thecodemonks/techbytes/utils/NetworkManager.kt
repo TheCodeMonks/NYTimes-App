@@ -56,7 +56,9 @@ class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
             connectivityManager.registerNetworkCallbackCompact(this)
             val connectionStatus = connectivityManager.allNetworks.any { network ->
                 val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
-                return@any networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+                return@any networkCapabilities?.hasCapability(
+                    NetworkCapabilities.NET_CAPABILITY_INTERNET
+                ) == true
             }
             _connectionStatusLiveData.value = connectionStatus
         }
@@ -72,7 +74,6 @@ class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
         _connectionStatusLiveData.postValue(false)
     }
 
-
     private fun ConnectivityManager.registerNetworkCallbackCompact(networkManager: NetworkManager) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             registerDefaultNetworkCallback(networkManager)
@@ -82,4 +83,3 @@ class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
         }
     }
 }
-

@@ -56,7 +56,6 @@ abstract class ArticleDatabase : RoomDatabase() {
                         context
                     )
                         .also { instance = it }
-
             }
 
         // create db instance
@@ -65,8 +64,5 @@ abstract class ArticleDatabase : RoomDatabase() {
             ArticleDatabase::class.java,
             "articles_db.db"
         ).build()
-
-
     }
-
 }
