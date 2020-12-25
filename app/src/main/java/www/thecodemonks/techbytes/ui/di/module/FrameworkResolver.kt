@@ -24,38 +24,40 @@
  *
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
+package www.thecodemonks.techbytes.ui.di.module
 
-    //versions
-    ext.kotlin_version = "1.4.20"
-    ext.hilt_version =  "2.28-alpha"
-    ext.hilt_support =  "1.0.0-alpha01"
+import android.content.Context
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
+import www.thecodemonks.techbytes.datastore.UIModeDataStore
+import www.thecodemonks.techbytes.db.AppDatabase
+import www.thecodemonks.techbytes.db.ArticleDao
+import www.thecodemonks.techbytes.db.ArticleDatabase
+import www.thecodemonks.techbytes.utils.NetworkManager
 
-    repositories {
-        google()
-        jcenter()
+
+// this module resolve all the hard android framework dependent objects
+
+@Module
+@InstallIn(ApplicationComponent::class)
+object FrameworkResolver {
+
+    @Provides
+    fun providesAppDatabase(@ApplicationContext context: Context): AppDatabase {
+        return AppDatabase.invoke(context)
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-alpha16'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
+
+    @Provides
+    fun providesUIModelDataStore(@ApplicationContext context: Context): UIModeDataStore {
+        return UIModeDataStore(context)
     }
-}
 
-plugins {
-    id "org.jlleitschuh.gradle.ktlint" version "9.4.1"
-}
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
+    @Provides
+    fun providesNetworkManager(@ApplicationContext context: Context): NetworkManager {
+        return NetworkManager(context)
     }
-    apply plugin: "org.jlleitschuh.gradle.ktlint"
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

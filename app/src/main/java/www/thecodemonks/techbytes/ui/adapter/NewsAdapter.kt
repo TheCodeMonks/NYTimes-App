@@ -65,10 +65,10 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
         val item = differ.currentList[position]
         holder.binding.apply {
 
+            // TODO clean logic
             if (item.title.isBlank() || item.description.isNullOrBlank() ||
                 item.image.isNullOrBlank()
             ) {
-
                 itemArticleTitle.visibility = View.GONE
                 itemPostDescription.visibility = View.GONE
                 itemPostAuthor.visibility = View.GONE

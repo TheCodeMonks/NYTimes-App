@@ -48,18 +48,22 @@ class NetworkManager(context: Context) : ConnectivityManager.NetworkCallback() {
 
     private val _connectionStatusLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val observeConnectionStatus: LiveData<Boolean> = _connectionStatusLiveData
+
     private val appContext: Context = context.applicationContext
 
     init {
         val connectivityManager = appContext.getSystemService<ConnectivityManager>()
+
         if (connectivityManager != null) {
             connectivityManager.registerNetworkCallbackCompact(this)
+
             val connectionStatus = connectivityManager.allNetworks.any { network ->
                 val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
                 return@any networkCapabilities?.hasCapability(
                     NetworkCapabilities.NET_CAPABILITY_INTERNET
                 ) == true
             }
+
             _connectionStatusLiveData.value = connectionStatus
         }
     }

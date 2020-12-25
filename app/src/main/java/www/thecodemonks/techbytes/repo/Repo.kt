@@ -26,23 +26,24 @@
 
 package www.thecodemonks.techbytes.repo
 
+import kotlinx.coroutines.flow.Flow
 import org.jsoup.Jsoup
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.model.Article
 
-class Repo(private val db: ArticleDatabase) {
+class Repo(private val db: ArticleDatabase) : ArticleRepository {
 
     // insert or update article
-    suspend fun upsertArticle(article: Article) = db.getArticleDao().upsert(article)
+    override suspend fun upsertArticle(article: Article) = db.getArticleDao().upsert(article)
 
     // get saved article
-    fun getSavedArticle() = db.getArticleDao().getSavedArticle()
+    override fun getSavedArticle(): Flow<List<Article>> = db.getArticleDao().getSavedArticle()
 
     // delete article
-    suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
+    override suspend fun deleteArticle(article: Article) = db.getArticleDao().deleteArticle(article)
 
     // crawl data from ny times by selecting Xpath elements
-    fun crawlFromNYTimes(url: String): List<Article> {
+    override fun crawlFromNYTimes(url: String): List<Article> {
 
         val document = Jsoup.connect(url).get()
         val articles: MutableList<Article> = mutableListOf()
@@ -79,4 +80,12 @@ class Repo(private val db: ArticleDatabase) {
         }
         return articles
     }
+}
+
+
+interface ArticleRepository {
+    suspend fun upsertArticle(article: Article)
+    fun getSavedArticle(): Flow<List<Article>>
+    suspend fun deleteArticle(article: Article)
+    fun crawlFromNYTimes(url: String): List<Article>
 }

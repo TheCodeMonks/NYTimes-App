@@ -27,29 +27,32 @@
 package www.thecodemonks.techbytes.ui.viewmodel
 
 import android.app.Application
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import www.thecodemonks.techbytes.datastore.UIModePreference
+import www.thecodemonks.techbytes.datastore.UIModeDataStore
+import www.thecodemonks.techbytes.datastore.UIModeMutableStore
+import www.thecodemonks.techbytes.datastore.UIModeReadStore
 import www.thecodemonks.techbytes.model.Article
+import www.thecodemonks.techbytes.repo.ArticleRepository
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.utils.Constants
 import www.thecodemonks.techbytes.utils.NetworkManager
 
-class ArticleViewModel(
+class ArticleViewModel @ViewModelInject constructor(
     application: Application,
-    private val repo: Repo,
+    private val repo: ArticleRepository,
+    private val uiModeEdit: UIModeMutableStore,
+    val uiModeRead: UIModeReadStore,
+    private val networkManager: NetworkManager,
 ) : AndroidViewModel(application) {
 
     private val _articles = MutableLiveData<List<Article>>()
     val articles: LiveData<List<Article>>
         get() = _articles
 
-    private val networkManager = NetworkManager(application)
     val networkObserver = networkManager.observeConnectionStatus
-
-    // DataStore
-    private val uiDataStore = UIModePreference(application)
 
     val currentTopic: MutableLiveData<String> by lazy {
         MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
@@ -90,14 +93,9 @@ class ArticleViewModel(
         }
     }
 
-    // Get From DataStore
-    val readDataStore = uiDataStore.uiMode
-
     // Save to DataStore
-    fun saveToDataStore(isNightMode: Boolean) {
-        viewModelScope.launch(IO) {
-            uiDataStore.saveToDataStore(isNightMode)
-        }
+    fun saveToDataStore(isNightMode: Boolean) = viewModelScope.launch(IO) {
+        uiModeEdit.saveToDataStore(isNightMode)
     }
 
     // set default topic when opening

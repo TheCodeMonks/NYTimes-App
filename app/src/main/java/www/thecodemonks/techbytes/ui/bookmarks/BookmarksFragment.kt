@@ -31,24 +31,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentBookmarksBinding
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
-import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.SpacesItemDecorator
-import www.thecodemonks.techbytes.utils.hide
-import www.thecodemonks.techbytes.utils.show
+import www.thecodemonks.techbytes.utils.setVisible
 
+@AndroidEntryPoint
 class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
-    private lateinit var viewModel: ArticleViewModel
+    private val viewModel: ArticleViewModel by activityViewModels()
+
     private lateinit var newsAdapter: NewsAdapter
+
     private lateinit var _binding: FragmentBookmarksBinding
     private val binding get() = _binding
 
@@ -63,19 +66,21 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setup()
+    }
 
-        // setup rv
-        setUpRV()
+    private fun setup() = with(binding) {
 
-        // init viewModel
-        viewModel = (activity as BaseActivity).viewModel
+        newsAdapter = NewsAdapter().also {
+            bookmarkRv.adapter = it
+            bookmarkRv.addItemDecoration(SpacesItemDecorator(16))
+        }
 
         // get saved articles from room db
         viewModel.getSavedArticle().observe(viewLifecycleOwner) {
-            binding.emptyStateLayout.run {
-                if (it.isNullOrEmpty()) show() else hide()
-            }
-            newsAdapter.differ.submitList(it)
+            val articles = it ?: emptyList()
+            emptyStateLayout.setVisible(articles.isEmpty())
+            newsAdapter.differ.submitList(articles)
         }
 
         // init item touch callback for swipe action
@@ -95,6 +100,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
                 // get item position & delete article
                 val position = viewHolder.adapterPosition
                 val item = newsAdapter.differ.currentList[position]
+                //todo extension item to Article
                 val article = Article(
                     item.title,
                     item.description,
@@ -104,17 +110,18 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
                 )
 
                 viewModel.deleteArticle(article)
+
+                //todo extension snack bar
                 Snackbar.make(
                     binding.bookmarkRootView,
                     "Article deleted successfully",
                     Snackbar.LENGTH_LONG
-                )
-                    .apply {
-                        setAction("Undo") {
-                            viewModel.upsertArticle(article)
-                        }
-                        show()
+                ).apply {
+                    setAction("Undo") {
+                        viewModel.upsertArticle(article)
                     }
+                    show()
+                }
             }
         }
 
@@ -131,14 +138,6 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
                 R.id.action_bookmarksFragment_to_articleDetailsFragment,
                 bundle
             )
-        }
-    }
-
-    private fun setUpRV() {
-        newsAdapter = NewsAdapter()
-        binding.bookmarkRv.apply {
-            adapter = newsAdapter
-            addItemDecoration(SpacesItemDecorator(16))
         }
     }
 }

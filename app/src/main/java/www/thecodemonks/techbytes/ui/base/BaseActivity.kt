@@ -27,6 +27,7 @@
 package www.thecodemonks.techbytes.ui.base
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -37,37 +38,32 @@ import androidx.work.ExistingPeriodicWorkPolicy.KEEP
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import dagger.hilt.android.AndroidEntryPoint
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.ActivityBaseBinding
-import www.thecodemonks.techbytes.db.ArticleDatabase
+import www.thecodemonks.techbytes.db.AppDatabase
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
-import www.thecodemonks.techbytes.ui.viewmodel.ViewModelProviderFactory
 import www.thecodemonks.techbytes.worker.MyWorker
 import java.util.concurrent.TimeUnit
 
+@AndroidEntryPoint
 class BaseActivity : AppCompatActivity() {
 
-    lateinit var viewModel: ArticleViewModel
+    //todo test scope and reference
+    private val viewModel: ArticleViewModel by viewModels()
+
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = ActivityBaseBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        // setup VMProviderFactory
-        val repo = Repo(
-            ArticleDatabase(this)
-        )
-
-        // Passing application to ViewModel for DataStore
-        val viewModelProviderFactory = ViewModelProviderFactory(this.application, repo)
-
-        viewModel =
-            ViewModelProvider(this, viewModelProviderFactory).get(ArticleViewModel::class.java)
-
+        //todo integrate with Hilt
         // setup workManager
         initWorker()
 
@@ -78,6 +74,7 @@ class BaseActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
 
+    //todo integrate with Hilt
     private fun initWorker() {
         // worker constraints
         val constraints = Constraints.Builder()
