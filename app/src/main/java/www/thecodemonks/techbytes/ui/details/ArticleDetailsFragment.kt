@@ -32,18 +32,24 @@ import android.view.*
 import android.widget.Toast
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
+import dagger.hilt.android.AndroidEntryPoint
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentArticleDetailsBinding
 import www.thecodemonks.techbytes.model.Article
-import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants
 
+@AndroidEntryPoint
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
-    private lateinit var viewModel: ArticleViewModel
+
+    private val viewModel: ArticleViewModel by activityViewModels()
+
     private val args: ArticleDetailsFragmentArgs by navArgs()
+
     private var completeUrl: String? = null
+
     private lateinit var _binding: FragmentArticleDetailsBinding
     private val binding get() = _binding
 
@@ -60,9 +66,6 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
         super.onViewCreated(view, savedInstanceState)
 
         setHasOptionsMenu(true)
-
-        // init viewModel
-        viewModel = (activity as BaseActivity).viewModel
 
         // receive bundle here
         val bundle = args.article

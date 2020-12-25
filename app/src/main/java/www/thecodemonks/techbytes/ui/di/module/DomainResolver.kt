@@ -24,38 +24,34 @@
  *
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-buildscript {
+package www.thecodemonks.techbytes.ui.di.module
 
-    //versions
-    ext.kotlin_version = "1.4.20"
-    ext.hilt_version =  "2.28-alpha"
-    ext.hilt_support =  "1.0.0-alpha01"
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ApplicationComponent
+import www.thecodemonks.techbytes.datastore.UIModeDataStore
+import www.thecodemonks.techbytes.datastore.UIModeMutableStore
+import www.thecodemonks.techbytes.datastore.UIModeReadStore
+import www.thecodemonks.techbytes.db.AppDatabase
+import www.thecodemonks.techbytes.db.ArticleDatabase
+import javax.inject.Singleton
 
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-alpha16'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.1"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-    }
-}
+// this resolver transforms hard android framework dependencies to android free logic objects
 
-plugins {
-    id "org.jlleitschuh.gradle.ktlint" version "9.4.1"
-}
+@Module
+@InstallIn(ApplicationComponent::class)
+abstract class DomainResolver {
 
-allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
-    apply plugin: "org.jlleitschuh.gradle.ktlint"
-}
+    @Binds
+    @Singleton
+    abstract fun bindArticleDatabase(appDatabase: AppDatabase): ArticleDatabase
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+    @Binds
+    @Singleton
+    abstract fun bindUIModeMutableStore(uiModeDataStore: UIModeDataStore): UIModeMutableStore
+
+    @Binds
+    @Singleton
+    abstract fun bindUIModeReadStore(uiModeDataStore: UIModeDataStore): UIModeReadStore
 }

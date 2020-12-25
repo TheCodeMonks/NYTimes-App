@@ -39,7 +39,7 @@ import androidx.core.content.ContextCompat
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import www.thecodemonks.techbytes.R
-import www.thecodemonks.techbytes.db.ArticleDatabase
+import www.thecodemonks.techbytes.db.AppDatabase
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.utils.Constants
@@ -47,6 +47,7 @@ import www.thecodemonks.techbytes.utils.Constants
 class MyWorker(context: Context, params: WorkerParameters) : Worker(context, params) {
 
     private fun showNotification(title: String, description: String) {
+
         val intent = Intent(applicationContext, BaseActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
@@ -87,7 +88,7 @@ class MyWorker(context: Context, params: WorkerParameters) : Worker(context, par
 
     override fun doWork(): Result {
 
-        val repository = Repo(ArticleDatabase(applicationContext))
+        val repository = Repo(AppDatabase(applicationContext))
         val result = repository.crawlFromNYTimes(Constants.NY_TECH).toList()
 
         return if (result.isNullOrEmpty()) {

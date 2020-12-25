@@ -34,16 +34,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentArticlesBinding
 import www.thecodemonks.techbytes.model.Category
 import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
-import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
 import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
@@ -59,10 +59,23 @@ import www.thecodemonks.techbytes.utils.show
 
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
-    private lateinit var viewModel: ArticleViewModel
+    private val viewModel: ArticleViewModel by activityViewModels()
+
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var categoryAdapter: CategoryAdapter
-    private lateinit var category: MutableList<Category>
+
+    private val category: MutableList<Category> by lazy {
+        mutableListOf(
+            Category("Business", NY_BUSINESS),
+            Category("Education", NY_EDUCATION),
+            Category("Science", NY_SCIENCE),
+            Category("Space", NY_SPACE),
+            Category("Sports", NY_SPORTS),
+            Category("Tech", NY_TECH),
+            Category("Your money", NY_YOURMONEY)
+        )
+    }
+
     private lateinit var _binding: FragmentArticlesBinding
     private val binding get() = _binding
 
@@ -78,14 +91,12 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
+        setup()
+    }
 
-        // init article rv
-        setUpArticleRV()
-
-        // init show viewModel
-        viewModel = (activity as BaseActivity).viewModel
-
-        initCatergory()
+    private fun setup() = with(binding) {
+        initArticlesRv()
+        initCategoryRv()
         observeNetworkConnectivity()
         observeTopics()
         observeArticles()
@@ -94,41 +105,39 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         swipeToRefreshArticles()
     }
 
-    private fun initCatergory() {
-        // add category list
-        category = mutableListOf(
-            Category("Business", NY_BUSINESS),
-            Category("Education", NY_EDUCATION),
-            Category("Science", NY_SCIENCE),
-            Category("Space", NY_SPACE),
-            Category("Sports", NY_SPORTS),
-            Category("Tech", NY_TECH),
-            Category("Your money", NY_YOURMONEY)
-        )
-
-        // attach category list to adapter
-        categoryAdapter = CategoryAdapter(category)
-        binding.categoryRv.rootView.post {
-            binding.categoryRv.adapter = categoryAdapter
-            binding.categoryRv.addItemDecoration(SpacesItemDecorator(16))
+    private fun initArticlesRv() = with(binding) {
+        // init article rv
+        newsAdapter = NewsAdapter().also {
+            articleRv.adapter = it
+            articleRv.addItemDecoration(SpacesItemDecorator(16))
         }
     }
 
-    private fun swipeToRefreshArticles() {
-        binding.refreshArticles.setOnRefreshListener {
-            viewModel.reCrawlFromNYTimes {
-                binding.refreshArticles.isRefreshing = true
+    private fun initCategoryRv() = with(binding) {
+        // init category rv
+        categoryAdapter = CategoryAdapter(category).also {
+            categoryRv.rootView.post {
+                binding.categoryRv.adapter = it
+                binding.categoryRv.addItemDecoration(SpacesItemDecorator(16))
             }
         }
     }
 
-    private fun observeTopics() {
+    private fun swipeToRefreshArticles() = with(binding) {
+        refreshArticles.setOnRefreshListener {
+            viewModel.reCrawlFromNYTimes {
+                refreshArticles.isRefreshing = true
+            }
+        }
+    }
+
+    private fun observeTopics() = with(binding) {
         // observe changes on topic change for list
         viewModel.currentTopic.observe(viewLifecycleOwner) {
-            binding.articleRv.animate().alpha(0f)
+            articleRv.animate().alpha(0f)
                 .withStartAction {
                     if (viewModel.networkObserver.value == true) {
-                        binding.refreshArticles.isRefreshing = true
+                        refreshArticles.isRefreshing = true
                     }
                 }
                 .withEndAction {
@@ -157,12 +166,12 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         }
     }
 
-    private fun observeArticles() {
+    private fun observeArticles() = with(binding) {
         // observe the articles
         viewModel.articles.observe(viewLifecycleOwner) {
-            binding.refreshArticles.isRefreshing = false
+            refreshArticles.isRefreshing = false
             newsAdapter.differ.submitList(it)
-            binding.articleRv.animate().alpha(1f)
+            articleRv.animate().alpha(1f)
         }
     }
 
@@ -170,9 +179,10 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu, menu)
 
+        // TODO move to viewmodel
         // Set the item state
         lifecycleScope.launch {
-            val isChecked = viewModel.readDataStore.first()
+            val isChecked = viewModel.uiModeRead.uiMode.first()
             val item = menu.findItem(R.id.action_night_mode)
             item.isChecked = isChecked
             setUIMode(item, isChecked)
@@ -205,14 +215,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             viewModel.saveToDataStore(false)
             item.setIcon(R.drawable.ic_day)
-        }
-    }
-
-    private fun setUpArticleRV() {
-        newsAdapter = NewsAdapter()
-        binding.articleRv.apply {
-            adapter = newsAdapter
-            addItemDecoration(SpacesItemDecorator(16))
         }
     }
 
