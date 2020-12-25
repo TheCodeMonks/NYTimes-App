@@ -30,7 +30,7 @@ buildscript {
     //versions
     ext.kotlin_version = "1.4.20"
     ext.hilt_version =  "2.28-alpha"
-    ext.hilt_support =  "1.0.0-alpha01"
+    ext.hilt_support =  "1.0.0-alpha02"
 
     repositories {
         google()
