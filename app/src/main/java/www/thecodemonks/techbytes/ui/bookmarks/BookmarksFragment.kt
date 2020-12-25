@@ -100,7 +100,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
                 // get item position & delete article
                 val position = viewHolder.adapterPosition
                 val item = newsAdapter.differ.currentList[position]
-                //todo extension item to Article
+                // todo extension item to Article
                 val article = Article(
                     item.title,
                     item.description,
@@ -111,7 +111,7 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
 
                 viewModel.deleteArticle(article)
 
-                //todo extension snack bar
+                // todo extension snack bar
                 Snackbar.make(
                     binding.bookmarkRootView,
                     "Article deleted successfully",

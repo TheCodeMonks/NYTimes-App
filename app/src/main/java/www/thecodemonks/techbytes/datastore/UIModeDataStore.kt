@@ -35,25 +35,20 @@ import androidx.datastore.preferences.createDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-
-
 abstract class PrefsDataStore(context: Context, fileName: String) {
 
     internal val dataStore: DataStore<Preferences> = context.createDataStore(
         name = fileName
     )
-
 }
 
-class UIModeDataStore(context: Context) : PrefsDataStore(
-    context,
-    PREF_FILE_UI_MODE
-), UIModeMutableStore, UIModeReadStore {
-
-    companion object {
-        private const val PREF_FILE_UI_MODE = "ui_mode_preference"
-        private val UI_MODE_KEY = preferencesKey<Boolean>("ui_mode")
-    }
+class UIModeDataStore(context: Context) :
+    PrefsDataStore(
+        context,
+        PREF_FILE_UI_MODE
+    ),
+    UIModeMutableStore,
+    UIModeReadStore {
 
     override suspend fun saveToDataStore(isNightMode: Boolean) {
         dataStore.edit { preferences ->
@@ -67,8 +62,11 @@ class UIModeDataStore(context: Context) : PrefsDataStore(
             uiMode
         }
 
+    companion object {
+        private const val PREF_FILE_UI_MODE = "ui_mode_preference"
+        private val UI_MODE_KEY = preferencesKey<Boolean>("ui_mode")
+    }
 }
-
 
 interface UIModeMutableStore {
     suspend fun saveToDataStore(isNightMode: Boolean)
@@ -77,4 +75,3 @@ interface UIModeMutableStore {
 interface UIModeReadStore {
     val uiMode: Flow<Boolean>
 }
-

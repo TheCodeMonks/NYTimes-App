@@ -31,12 +31,10 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import www.thecodemonks.techbytes.datastore.UIModeDataStore
 import www.thecodemonks.techbytes.datastore.UIModeMutableStore
 import www.thecodemonks.techbytes.datastore.UIModeReadStore
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.repo.ArticleRepository
-import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.utils.Constants
 import www.thecodemonks.techbytes.utils.NetworkManager
 

@@ -34,11 +34,8 @@ import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import www.thecodemonks.techbytes.datastore.UIModeDataStore
 import www.thecodemonks.techbytes.db.AppDatabase
-import www.thecodemonks.techbytes.db.ArticleDao
-import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.utils.NetworkManager
 import javax.inject.Singleton
-
 
 // this module resolve all the hard android framework dependent objects
 
@@ -63,5 +60,4 @@ object FrameworkResolver {
     fun providesNetworkManager(@ApplicationContext context: Context): NetworkManager {
         return NetworkManager(context)
     }
-
 }

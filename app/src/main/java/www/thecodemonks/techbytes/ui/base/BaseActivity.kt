@@ -29,7 +29,6 @@ package www.thecodemonks.techbytes.ui.base
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -41,8 +40,6 @@ import androidx.work.WorkManager
 import dagger.hilt.android.AndroidEntryPoint
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.ActivityBaseBinding
-import www.thecodemonks.techbytes.db.AppDatabase
-import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.worker.MyWorker
 import java.util.concurrent.TimeUnit
@@ -50,7 +47,7 @@ import java.util.concurrent.TimeUnit
 @AndroidEntryPoint
 class BaseActivity : AppCompatActivity() {
 
-    //todo test scope and reference
+    // todo test scope and reference
     private val viewModel: ArticleViewModel by viewModels()
 
     private lateinit var navController: NavController
@@ -63,7 +60,7 @@ class BaseActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        //todo integrate with Hilt
+        // todo integrate with Hilt
         // setup workManager
         initWorker()
 
@@ -74,7 +71,7 @@ class BaseActivity : AppCompatActivity() {
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
 
-    //todo integrate with Hilt
+    // todo integrate with Hilt
     private fun initWorker() {
         // worker constraints
         val constraints = Constraints.Builder()

@@ -38,10 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentArticleDetailsBinding
 import www.thecodemonks.techbytes.model.Article
-import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants
-
 
 @AndroidEntryPoint
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {

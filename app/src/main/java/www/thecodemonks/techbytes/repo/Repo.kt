@@ -82,7 +82,6 @@ class Repo(private val db: ArticleDatabase) : ArticleRepository {
     }
 }
 
-
 interface ArticleRepository {
     suspend fun upsertArticle(article: Article)
     fun getSavedArticle(): Flow<List<Article>>

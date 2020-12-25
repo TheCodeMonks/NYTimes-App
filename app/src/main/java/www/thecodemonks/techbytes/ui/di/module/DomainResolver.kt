@@ -37,7 +37,6 @@ import www.thecodemonks.techbytes.db.AppDatabase
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import javax.inject.Singleton
 
-
 // this resolver transforms hard android framework dependencies to android free logic objects
 
 @Module
@@ -55,5 +54,4 @@ abstract class DomainResolver {
     @Binds
     @Singleton
     abstract fun bindUIModeReadStore(uiModeDataStore: UIModeDataStore): UIModeReadStore
-
 }

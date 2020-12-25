@@ -123,7 +123,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         }
     }
 
-
     private fun swipeToRefreshArticles() = with(binding) {
         refreshArticles.setOnRefreshListener {
             viewModel.reCrawlFromNYTimes {
@@ -180,7 +179,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu, menu)
 
-        //TODO move to viewmodel
+        // TODO move to viewmodel
         // Set the item state
         lifecycleScope.launch {
             val isChecked = viewModel.uiModeRead.uiMode.first()
@@ -218,7 +217,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             item.setIcon(R.drawable.ic_day)
         }
     }
-
 
     private fun observeNetworkConnectivity() {
         NetworkUtils.observeConnectivity(requireContext())

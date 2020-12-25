@@ -36,7 +36,6 @@ import www.thecodemonks.techbytes.repo.ArticleRepository
 import www.thecodemonks.techbytes.repo.Repo
 import javax.inject.Singleton
 
-
 // these modules components are android framework free
 
 @Module
@@ -55,5 +54,4 @@ object DataSourceResolver {
     fun provideArticleRepository(articleDatabase: ArticleDatabase): ArticleRepository {
         return Repo(articleDatabase)
     }
-
 }
