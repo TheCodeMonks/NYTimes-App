@@ -38,6 +38,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentArticlesBinding
 import www.thecodemonks.techbytes.model.Category
@@ -115,10 +116,11 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
     private fun initCategoryRv() = with(binding) {
         // init category rv
         categoryAdapter = CategoryAdapter(category).also {
-            categoryRv.adapter = it
-            categoryRv.addItemDecoration(SpacesItemDecorator(16))
+            categoryRv.rootView.post {
+                binding.categoryRv.adapter = it
+                binding.categoryRv.addItemDecoration(SpacesItemDecorator(16))
+            }
         }
-
     }
 
 
@@ -181,7 +183,7 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         //TODO move to viewmodel
         // Set the item state
         lifecycleScope.launch {
-            val isChecked = viewModel.uiModeRead.first()
+            val isChecked = viewModel.uiModeRead.uiMode.first()
             val item = menu.findItem(R.id.action_night_mode)
             item.isChecked = isChecked
             setUIMode(item, isChecked)

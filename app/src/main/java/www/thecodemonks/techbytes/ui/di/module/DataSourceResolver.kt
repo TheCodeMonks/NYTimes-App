@@ -34,6 +34,7 @@ import www.thecodemonks.techbytes.db.ArticleDao
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.ArticleRepository
 import www.thecodemonks.techbytes.repo.Repo
+import javax.inject.Singleton
 
 
 // these modules components are android framework free
@@ -43,12 +44,14 @@ import www.thecodemonks.techbytes.repo.Repo
 object DataSourceResolver {
 
     @Provides
+    @Singleton
     fun provideArticleDao(articleDatabase: ArticleDatabase): ArticleDao {
         return articleDatabase.getArticleDao()
     }
 
     // todo check scope
     @Provides
+    @Singleton
     fun provideArticleRepository(articleDatabase: ArticleDatabase): ArticleRepository {
         return Repo(articleDatabase)
     }

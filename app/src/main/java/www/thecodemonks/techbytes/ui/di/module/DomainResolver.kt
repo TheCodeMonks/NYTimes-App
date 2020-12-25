@@ -32,8 +32,10 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import www.thecodemonks.techbytes.datastore.UIModeDataStore
 import www.thecodemonks.techbytes.datastore.UIModeMutableStore
+import www.thecodemonks.techbytes.datastore.UIModeReadStore
 import www.thecodemonks.techbytes.db.AppDatabase
 import www.thecodemonks.techbytes.db.ArticleDatabase
+import javax.inject.Singleton
 
 
 // this resolver transforms hard android framework dependencies to android free logic objects
@@ -43,12 +45,15 @@ import www.thecodemonks.techbytes.db.ArticleDatabase
 abstract class DomainResolver {
 
     @Binds
+    @Singleton
     abstract fun bindArticleDatabase(appDatabase: AppDatabase): ArticleDatabase
 
     @Binds
+    @Singleton
     abstract fun bindUIModeMutableStore(uiModeDataStore: UIModeDataStore): UIModeMutableStore
 
     @Binds
-    abstract fun bindUIModeReadStore(uiModeDataStore: UIModeDataStore): UIModeMutableStore
+    @Singleton
+    abstract fun bindUIModeReadStore(uiModeDataStore: UIModeDataStore): UIModeReadStore
 
 }

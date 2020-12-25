@@ -39,17 +39,10 @@ import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.ItemPostCategoryBinding
 import www.thecodemonks.techbytes.model.Category
 
-class CategoryAdapter(
-    private val category: MutableList<Category> = mutableListOf()
-) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
+class CategoryAdapter(private val category: MutableList<Category>) :
+    RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var selectedItem: Int = -1
-
-    fun submitList(categories: List<Category>) {
-        category.clear()
-        category.addAll(categories)
-        notifyDataSetChanged()
-    }
 
     inner class CategoryViewHolder(val binding: ItemPostCategoryBinding) :
         RecyclerView.ViewHolder(binding.root)

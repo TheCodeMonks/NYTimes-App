@@ -37,6 +37,7 @@ import www.thecodemonks.techbytes.db.AppDatabase
 import www.thecodemonks.techbytes.db.ArticleDao
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.utils.NetworkManager
+import javax.inject.Singleton
 
 
 // this module resolve all the hard android framework dependent objects
@@ -45,16 +46,19 @@ import www.thecodemonks.techbytes.utils.NetworkManager
 @InstallIn(ApplicationComponent::class)
 object FrameworkResolver {
 
+    @Singleton
     @Provides
     fun providesAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return AppDatabase.invoke(context)
     }
 
+    @Singleton
     @Provides
     fun providesUIModelDataStore(@ApplicationContext context: Context): UIModeDataStore {
         return UIModeDataStore(context)
     }
 
+    @Singleton
     @Provides
     fun providesNetworkManager(@ApplicationContext context: Context): NetworkManager {
         return NetworkManager(context)
