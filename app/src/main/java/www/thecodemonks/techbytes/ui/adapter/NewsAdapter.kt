@@ -32,15 +32,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.api.load
+import coil.load
 import coil.transform.RoundedCornersTransformation
-import kotlinx.android.synthetic.main.item_post_article.view.*
-import www.thecodemonks.techbytes.R
+import www.thecodemonks.techbytes.databinding.ItemPostArticleBinding
 import www.thecodemonks.techbytes.model.Article
 
-
 class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
-
 
     private val differCallback = object : DiffUtil.ItemCallback<Article>() {
         override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -54,14 +51,9 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
 
     val differ = AsyncListDiffer(this, differCallback)
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsVH {
-
-        return NewsVH(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.item_post_article,
-                parent,
-                false
-            )
-        )
+        val binding =
+            ItemPostArticleBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return NewsVH(binding)
     }
 
     override fun getItemCount(): Int {
@@ -71,20 +63,21 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
     override fun onBindViewHolder(holder: NewsVH, position: Int) {
 
         val item = differ.currentList[position]
-        holder.itemView.apply {
+        holder.binding.apply {
 
-            if (item.title.isNullOrBlank() || item.description.isNullOrBlank() || item.image.isNullOrBlank()) {
+            if (item.title.isBlank() || item.description.isNullOrBlank() ||
+                item.image.isNullOrBlank()
+            ) {
 
-                item_article_title.visibility = View.GONE
-                item_post_description.visibility = View.GONE
-                item_post_author.visibility = View.GONE
-                item_article_image.visibility = View.GONE
-
+                itemArticleTitle.visibility = View.GONE
+                itemPostDescription.visibility = View.GONE
+                itemPostAuthor.visibility = View.GONE
+                itemArticleImage.visibility = View.GONE
             } else {
-                item_article_title.text = item.title
-                item_post_description.text = item.description
-                item_post_author.text = item.author.toString().ifBlank { "Unknown" }
-                item_article_image.load(item.image) {
+                itemArticleTitle.text = item.title
+                itemPostDescription.text = item.description
+                itemPostAuthor.text = item.author.toString().ifBlank { "Unknown" }
+                itemArticleImage.load(item.image) {
                     crossfade(true)
                     crossfade(200)
                     transformations(
@@ -102,18 +95,14 @@ class NewsAdapter : RecyclerView.Adapter<NewsAdapter.NewsVH>() {
             holder.itemView.setOnClickListener {
                 onItemClickListener?.let { it(item) }
             }
-
         }
-
     }
 
-    inner class NewsVH(itemView: View) : RecyclerView.ViewHolder(itemView)
-
+    inner class NewsVH(val binding: ItemPostArticleBinding) : RecyclerView.ViewHolder(binding.root)
 
     // on item click listener
     private var onItemClickListener: ((Article) -> Unit)? = null
     fun setOnItemClickListener(listener: (Article) -> Unit) {
         onItemClickListener = listener
     }
-
 }

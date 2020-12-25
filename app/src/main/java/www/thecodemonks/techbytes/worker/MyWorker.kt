@@ -50,7 +50,9 @@ class MyWorker(context: Context, params: WorkerParameters) : Worker(context, par
         val intent = Intent(applicationContext, BaseActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
-            applicationContext, 0, intent,
+            applicationContext,
+            0,
+            intent,
             PendingIntent.FLAG_ONE_SHOT
         )
 

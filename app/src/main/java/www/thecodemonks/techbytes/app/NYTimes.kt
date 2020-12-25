@@ -24,7 +24,7 @@
  *
  */
 
-package www.thecodemonks.techbytes
+package www.thecodemonks.techbytes.app
 
 import android.app.Application
 

@@ -27,10 +27,7 @@
 package www.thecodemonks.techbytes.ui.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.datastore.UIModePreference
@@ -38,7 +35,6 @@ import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.utils.Constants
 import www.thecodemonks.techbytes.utils.NetworkManager
-
 
 class ArticleViewModel(
     application: Application,
@@ -59,24 +55,38 @@ class ArticleViewModel(
         MutableLiveData<String>().defaultTopic(Constants.NY_TECH)
     }
 
-
     // save article
     fun upsertArticle(article: Article) = viewModelScope.launch {
         repo.upsertArticle(article)
     }
 
     // get saved article
-    fun getSavedArticle() = repo.getSavedArticle()
+    fun getSavedArticle() = repo.getSavedArticle().asLiveData()
 
     // save article
     fun deleteArticle(article: Article) = viewModelScope.launch {
         repo.deleteArticle(article)
     }
 
+    private var currentQueryUrl = ""
+
     // crawl data from NY times
     fun crawlFromNYTimes(url: String) {
-        viewModelScope.launch(IO) {
-            _articles.postValue(repo.crawlFromNYTimes(url))
+        currentQueryUrl = url
+        if (networkObserver.value == true) {
+            viewModelScope.launch(IO) {
+                _articles.postValue(repo.crawlFromNYTimes(url))
+            }
+        }
+    }
+
+    fun reCrawlFromNYTimes(refreshFailed: () -> Unit = {}) {
+        if (networkObserver.value == true) {
+            viewModelScope.launch(IO) {
+                _articles.postValue(repo.crawlFromNYTimes(currentQueryUrl))
+            }
+        } else {
+            refreshFailed.invoke()
         }
     }
 
@@ -90,8 +100,7 @@ class ArticleViewModel(
         }
     }
 
-
+    // set default topic when opening
     private fun <T : Any?> MutableLiveData<T>.defaultTopic(initialValue: T) =
         apply { setValue(initialValue) }
-
 }

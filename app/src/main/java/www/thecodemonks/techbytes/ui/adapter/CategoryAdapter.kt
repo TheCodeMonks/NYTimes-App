@@ -32,30 +32,28 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_post_category.view.*
 import www.thecodemonks.techbytes.R
+import www.thecodemonks.techbytes.databinding.ItemPostCategoryBinding
 import www.thecodemonks.techbytes.model.Category
-
 
 class CategoryAdapter(private val category: MutableList<Category>) :
     RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
 
     private var selectedItem: Int = -1
 
-    inner class CategoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
+    inner class CategoryViewHolder(val binding: ItemPostCategoryBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): CategoryViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_post_category, parent, false)
-        return CategoryViewHolder(view)
+        val binding =
+            ItemPostCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CategoryViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -63,10 +61,9 @@ class CategoryAdapter(private val category: MutableList<Category>) :
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
+        holder.binding.apply {
 
-        holder.itemView.apply {
-
-            item_category_title.text = category[position].title
+            itemCategoryTitle.text = category[position].title
 
             // on item click
             holder.itemView.setOnClickListener {
@@ -76,57 +73,49 @@ class CategoryAdapter(private val category: MutableList<Category>) :
                     if (selectedItem == position) {
                         notifyItemChanged(position)
                         return@setOnClickListener
-
                     }
 
                     selectedItem = position
                     notifyDataSetChanged()
-
                 }
             }
 
             // if item selected then change it's state color
             when (selectedItem) {
                 position -> {
-                    item_category_title.setTextColor(
+                    itemCategoryTitle.setTextColor(
                         ContextCompat.getColor(
-                            item_category_title.context,
+                            itemCategoryTitle.context,
                             R.color.white
                         )
                     )
 
                     MyDrawableCompat.setColorFilter(
-                        item_category_title.background,
-                        ContextCompat.getColor(context, R.color.design_default_color_primary)
+                        itemCategoryTitle.background,
+                        ContextCompat.getColor(root.context, R.color.design_default_color_primary)
                     )
-
                 }
                 else -> {
-                    item_category_title.setTextColor(
+                    itemCategoryTitle.setTextColor(
                         ContextCompat.getColor(
-                            item_category_title.context,
+                            itemCategoryTitle.context,
                             R.color.categoryText
                         )
                     )
                     MyDrawableCompat.setColorFilter(
-                        item_category_title.background,
-                        ContextCompat.getColor(context, R.color.blue_smoke)
+                        itemCategoryTitle.background,
+                        ContextCompat.getColor(root.context, R.color.blue_smoke)
                     )
-
                 }
             }
-
         }
-
     }
-
 
     // on item click listener
     private var onItemClickListener: ((Category) -> Unit)? = null
     fun setOnItemClickListener(listener: (Category) -> Unit) {
         onItemClickListener = listener
     }
-
 
     // check if android version is greater than Q -> color filter else use set color filter
     object MyDrawableCompat {
@@ -138,5 +127,4 @@ class CategoryAdapter(private val category: MutableList<Category>) :
             }
         }
     }
-
 }

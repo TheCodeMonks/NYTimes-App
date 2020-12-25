@@ -28,40 +28,55 @@ package www.thecodemonks.techbytes.ui.details
 
 import android.os.Build
 import android.os.Bundle
-import android.view.View
+import android.view.*
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import kotlinx.android.synthetic.main.fragment_article_details.*
 import www.thecodemonks.techbytes.R
+import www.thecodemonks.techbytes.databinding.FragmentArticleDetailsBinding
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants
 
-
 class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
     private lateinit var viewModel: ArticleViewModel
-    val args: ArticleDetailsFragmentArgs by navArgs()
+    private val args: ArticleDetailsFragmentArgs by navArgs()
+    private var completeUrl: String? = null
+    private lateinit var _binding: FragmentArticleDetailsBinding
+    private val binding get() = _binding
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentArticleDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setHasOptionsMenu(true)
 
         // init viewModel
         viewModel = (activity as BaseActivity).viewModel
 
         // receive bundle here
         val bundle = args.article
-        val completeUrl = Constants.URL.plus(bundle.source)
+        completeUrl = Constants.URL.plus(bundle.source)
 
         // webView with url has param
-        web_view.apply {
+        binding.webView.apply {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 webViewClient = webViewClient
             }
-            loadUrl(completeUrl)
+            loadUrl(completeUrl!!)
         }
 
-        btn_saved_article.setOnClickListener {
+        binding.btnSavedArticle.setOnClickListener {
             val article = Article(
                 bundle.title,
                 bundle.description,
@@ -70,10 +85,38 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
                 bundle.source
             )
             viewModel.upsertArticle(article).also {
-                Toast.makeText(activity, "Article saved successfully!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, getString(R.string.successfully_saved), Toast.LENGTH_SHORT)
+                    .show()
             }
         }
+    }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        inflater.inflate(R.menu.share_menu, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle action bar item clicks here.
+        return when (item.itemId) {
+            R.id.action_share -> {
+                val shareMsg = getString(
+                    R.string.share_message,
+                    args.article.title,
+                    completeUrl
+                )
+
+                val intent = ShareCompat.IntentBuilder.from(requireActivity())
+                    .setType("text/plain")
+                    .setText(shareMsg)
+                    .intent
+
+                if (intent.resolveActivity(requireActivity().packageManager) != null) {
+                    startActivity(intent)
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

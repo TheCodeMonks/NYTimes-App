@@ -26,30 +26,25 @@
 
 package www.thecodemonks.techbytes.ui.articles
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.widget.LinearLayout
+import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.core.view.isVisible
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_articles.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.R
+import www.thecodemonks.techbytes.databinding.FragmentArticlesBinding
 import www.thecodemonks.techbytes.model.Category
 import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseActivity
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
-import www.thecodemonks.techbytes.utils.Animations
 import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
 import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
 import www.thecodemonks.techbytes.utils.Constants.NY_SCIENCE
@@ -57,8 +52,10 @@ import www.thecodemonks.techbytes.utils.Constants.NY_SPACE
 import www.thecodemonks.techbytes.utils.Constants.NY_SPORTS
 import www.thecodemonks.techbytes.utils.Constants.NY_TECH
 import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
+import www.thecodemonks.techbytes.utils.NetworkUtils
 import www.thecodemonks.techbytes.utils.SpacesItemDecorator
-
+import www.thecodemonks.techbytes.utils.hide
+import www.thecodemonks.techbytes.utils.show
 
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
@@ -66,10 +63,20 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var category: MutableList<Category>
+    private lateinit var _binding: FragmentArticlesBinding
+    private val binding get() = _binding
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentArticlesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
         // init article rv
@@ -78,6 +85,16 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
         // init show viewModel
         viewModel = (activity as BaseActivity).viewModel
 
+        initCatergory()
+        observeNetworkConnectivity()
+        observeTopics()
+        observeArticles()
+        categoryItemOnClick()
+        articleItemOnClick()
+        swipeToRefreshArticles()
+    }
+
+    private fun initCatergory() {
         // add category list
         category = mutableListOf(
             Category("Business", NY_BUSINESS),
@@ -91,39 +108,36 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
         // attach category list to adapter
         categoryAdapter = CategoryAdapter(category)
-        category_rv.rootView.post {
-            category_rv.adapter = categoryAdapter
-            category_rv.addItemDecoration(SpacesItemDecorator(16))
+        binding.categoryRv.rootView.post {
+            binding.categoryRv.adapter = categoryAdapter
+            binding.categoryRv.addItemDecoration(SpacesItemDecorator(16))
         }
+    }
 
+    private fun swipeToRefreshArticles() {
+        binding.refreshArticles.setOnRefreshListener {
+            viewModel.reCrawlFromNYTimes {
+                binding.refreshArticles.isRefreshing = true
+            }
+        }
+    }
+
+    private fun observeTopics() {
         // observe changes on topic change for list
-        viewModel.currentTopic.observe(viewLifecycleOwner, Observer {
-            article_rv.animate().alpha(0f)
+        viewModel.currentTopic.observe(viewLifecycleOwner) {
+            binding.articleRv.animate().alpha(0f)
                 .withStartAction {
-                    progress_view.isVisible = true
-                    progress_view.animate().alpha(1f)
+                    if (viewModel.networkObserver.value == true) {
+                        binding.refreshArticles.isRefreshing = true
+                    }
                 }
                 .withEndAction {
                     viewModel.crawlFromNYTimes(it.toString())
                 }
-        })
-
-        // observe the articles
-        viewModel.articles.observe(viewLifecycleOwner, Observer {
-            newsAdapter.differ.submitList(it)
-            progress_view.animate().alpha(0f)
-                .withEndAction {
-                    article_rv.animate().alpha(1f)
-                    progress_view.isVisible = false
-                }
-        })
-
-        // onclick to select source & post value to liveData
-        categoryAdapter.setOnItemClickListener {
-            viewModel.currentTopic.value = it.source
         }
+    }
 
-
+    private fun articleItemOnClick() {
         // pass bundle onclick
         newsAdapter.setOnItemClickListener { article ->
             val bundle = Bundle().apply {
@@ -134,19 +148,22 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
                 bundle
             )
         }
+    }
 
-        var lastOnlineStatus = true // this flag is required to block showing of onlineStatus on startup
-        viewModel.networkObserver.observe(viewLifecycleOwner, Observer { isConnected ->
-            if (lastOnlineStatus != isConnected) {
-                lastOnlineStatus = isConnected
-                if (isConnected) {
-                    container_network_status.setOnlineBehaviour()
-                } else {
-                    container_network_status.setOfflineBehaviour()
-                }
-            }
-        })
+    private fun categoryItemOnClick() {
+        // onclick to select source & post value to liveData
+        categoryAdapter.setOnItemClickListener {
+            viewModel.currentTopic.value = it.source
+        }
+    }
 
+    private fun observeArticles() {
+        // observe the articles
+        viewModel.articles.observe(viewLifecycleOwner) {
+            binding.refreshArticles.isRefreshing = false
+            newsAdapter.differ.submitList(it)
+            binding.articleRv.animate().alpha(1f)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -184,101 +201,80 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             viewModel.saveToDataStore(true)
             item.setIcon(R.drawable.ic_night)
-
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
             viewModel.saveToDataStore(false)
             item.setIcon(R.drawable.ic_day)
-
         }
     }
 
     private fun setUpArticleRV() {
         newsAdapter = NewsAdapter()
-        article_rv.apply {
+        binding.articleRv.apply {
             adapter = newsAdapter
             addItemDecoration(SpacesItemDecorator(16))
         }
     }
 
-
-    private val networkAutoDismissHandler = Handler()
-
-    private fun LinearLayout.setOnlineBehaviour() {
-
-        fun applyTheme() {
-            setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.colorStatusConnected
-                )
-            )
-            val onlineDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_on)
-            text_network_status.setCompoundDrawablesWithIntrinsicBounds(
-                onlineDrawable,
-                null,
-                null,
-                null
-            )
-            text_network_status.text = getString(R.string.text_connectivity)
-        }
-
-        if (!isVisible) {
-            //play expanding animation
-            Animations.expand(container_network_status)
-            applyTheme()
-        } else {
-            //play fade out and in animation
-            Animations.fadeOutFadeIn(text_network_status) {
-                //on fadeInStarted
-                applyTheme()
+    private fun observeNetworkConnectivity() {
+        NetworkUtils.observeConnectivity(requireContext())
+            .observe(viewLifecycleOwner) { isConnected ->
+                if (isConnected) onConnectivityAvailable() else onConnectivityUnavailable()
             }
-        }
-
-        networkAutoDismissHandler.postDelayed({
-            if (viewModel.networkObserver.value == true) {
-                Animations.collapse(this)
-            }
-        }, 3000)
-
     }
 
-    private fun LinearLayout.setOfflineBehaviour() {
-        networkAutoDismissHandler.removeCallbacksAndMessages(null)
-
-        fun applyTheme() {
-            setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.colorStatusNotConnected
+    private fun onConnectivityAvailable() {
+        binding.run {
+            textNetworkStatus.text = getString(R.string.text_connectivity)
+            containerNetworkStatus.apply {
+                setBackgroundColor(
+                    ResourcesCompat.getColor(
+                        resources,
+                        R.color.colorStatusConnected,
+                        requireActivity().theme
+                    )
                 )
-            )
-            val onlineDrawable =
+                animate()
+                    .alpha(1f)
+                    .setStartDelay(ANIMATION_DURATION)
+                    .setDuration(ANIMATION_DURATION)
+                    .setListener(
+                        object : AnimatorListenerAdapter() {
+                            override fun onAnimationEnd(animation: Animator) {
+                                hide()
+                            }
+                        }
+                    )
+                    .start()
+            }
+        }
+    }
+
+    private fun onConnectivityUnavailable() {
+        binding.run {
+            textNetworkStatus.text = getString(R.string.text_no_connectivity)
+            val offlineDrawable =
                 ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_off)
-            text_network_status.setCompoundDrawablesWithIntrinsicBounds(
-                onlineDrawable,
+            binding.textNetworkStatus.setCompoundDrawablesWithIntrinsicBounds(
+                offlineDrawable,
                 null,
                 null,
                 null
             )
-            text_network_status.text = getString(R.string.text_no_connectivity)
-        }
-
-
-        if (!isVisible) {
-            //play expanding animation
-            Animations.expand(container_network_status)
-            applyTheme()
-        } else {
-            //play fade out and in animation
-            Animations.fadeOutFadeIn(text_network_status) {
-                //on fadeInStarted
-                applyTheme()
+            binding.containerNetworkStatus.apply {
+                show()
+                setBackgroundColor(
+                    ResourcesCompat.getColor(
+                        resources,
+                        R.color.colorStatusNotConnected,
+                        requireActivity().theme
+                    )
+                )
             }
         }
-
-
     }
 
+    companion object {
+        const val ANIMATION_DURATION = 3000L
+    }
 }

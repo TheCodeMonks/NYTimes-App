@@ -30,22 +30,21 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy.KEEP
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
-import kotlinx.android.synthetic.main.activity_base.*
 import www.thecodemonks.techbytes.R
+import www.thecodemonks.techbytes.databinding.ActivityBaseBinding
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.Repo
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
-import www.thecodemonks.techbytes.ui.viewmodel.NewsViewModelProviderFactory
+import www.thecodemonks.techbytes.ui.viewmodel.ViewModelProviderFactory
 import www.thecodemonks.techbytes.worker.MyWorker
 import java.util.concurrent.TimeUnit
-
 
 class BaseActivity : AppCompatActivity() {
 
@@ -54,15 +53,17 @@ class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_base)
-        setSupportActionBar(toolbar)
+        val binding = ActivityBaseBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
         // setup VMProviderFactory
         val repo = Repo(
             ArticleDatabase(this)
         )
 
         // Passing application to ViewModel for DataStore
-        val viewModelProviderFactory = NewsViewModelProviderFactory(this.application, repo)
+        val viewModelProviderFactory = ViewModelProviderFactory(this.application, repo)
 
         viewModel =
             ViewModelProvider(this, viewModelProviderFactory).get(ArticleViewModel::class.java)
@@ -71,9 +72,10 @@ class BaseActivity : AppCompatActivity() {
         initWorker()
 
         // init nav controller with back action button
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
         NavigationUI.setupActionBarWithNavController(this, navController)
-
     }
 
     private fun initWorker() {
@@ -91,7 +93,6 @@ class BaseActivity : AppCompatActivity() {
         // enqueue work
         val workManager = WorkManager.getInstance(applicationContext)
         workManager.enqueueUniquePeriodicWork(JOB_TAG, KEEP, notificationWorkRequest)
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
