@@ -31,8 +31,6 @@ import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -46,6 +44,7 @@ import www.thecodemonks.techbytes.model.Category
 import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
+import www.thecodemonks.techbytes.utils.*
 import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
 import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
 import www.thecodemonks.techbytes.utils.Constants.NY_SCIENCE
@@ -53,10 +52,6 @@ import www.thecodemonks.techbytes.utils.Constants.NY_SPACE
 import www.thecodemonks.techbytes.utils.Constants.NY_SPORTS
 import www.thecodemonks.techbytes.utils.Constants.NY_TECH
 import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
-import www.thecodemonks.techbytes.utils.NetworkUtils
-import www.thecodemonks.techbytes.utils.SpacesItemDecorator
-import www.thecodemonks.techbytes.utils.hide
-import www.thecodemonks.techbytes.utils.show
 
 @AndroidEntryPoint
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
@@ -228,15 +223,15 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
     }
 
     private fun onConnectivityAvailable() {
+
         binding.run {
-            textNetworkStatus.text = getString(R.string.text_connectivity)
+            textNetworkStatus.apply {
+                text = getString(R.string.text_connectivity)
+                setDrawableLeft(R.drawable.ic_internet_on)
+            }
             containerNetworkStatus.apply {
                 setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.colorStatusConnected,
-                        requireActivity().theme
-                    )
+                    context.getColorCompat(R.color.colorStatusConnected)
                 )
                 animate()
                     .alpha(1f)
@@ -256,23 +251,14 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
     private fun onConnectivityUnavailable() {
         binding.run {
-            textNetworkStatus.text = getString(R.string.text_no_connectivity)
-            val offlineDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_off)
-            binding.textNetworkStatus.setCompoundDrawablesWithIntrinsicBounds(
-                offlineDrawable,
-                null,
-                null,
-                null
-            )
-            binding.containerNetworkStatus.apply {
+            textNetworkStatus.apply {
+                text = getString(R.string.text_no_connectivity)
+                setDrawableLeft(R.drawable.ic_internet_off)
+            }
+            containerNetworkStatus.apply {
                 show()
                 setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.colorStatusNotConnected,
-                        requireActivity().theme
-                    )
+                    context.getColorCompat(R.color.colorStatusNotConnected)
                 )
             }
         }
