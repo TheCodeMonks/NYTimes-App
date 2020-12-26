@@ -31,20 +31,20 @@ import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentArticlesBinding
 import www.thecodemonks.techbytes.model.Category
 import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
+import www.thecodemonks.techbytes.ui.base.BaseFragment
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
+import www.thecodemonks.techbytes.utils.*
 import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
 import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
 import www.thecodemonks.techbytes.utils.Constants.NY_SCIENCE
@@ -52,14 +52,11 @@ import www.thecodemonks.techbytes.utils.Constants.NY_SPACE
 import www.thecodemonks.techbytes.utils.Constants.NY_SPORTS
 import www.thecodemonks.techbytes.utils.Constants.NY_TECH
 import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
-import www.thecodemonks.techbytes.utils.NetworkUtils
-import www.thecodemonks.techbytes.utils.SpacesItemDecorator
-import www.thecodemonks.techbytes.utils.hide
-import www.thecodemonks.techbytes.utils.show
 
-class ArticlesFragment : Fragment(R.layout.fragment_articles) {
+@AndroidEntryPoint
+class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticleViewModel>() {
 
-    private val viewModel: ArticleViewModel by activityViewModels()
+    override val viewModel: ArticleViewModel by activityViewModels()
 
     private lateinit var newsAdapter: NewsAdapter
     private lateinit var categoryAdapter: CategoryAdapter
@@ -74,18 +71,6 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             Category("Tech", NY_TECH),
             Category("Your money", NY_YOURMONEY)
         )
-    }
-
-    private lateinit var _binding: FragmentArticlesBinding
-    private val binding get() = _binding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentArticlesBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -225,58 +210,49 @@ class ArticlesFragment : Fragment(R.layout.fragment_articles) {
             }
     }
 
-    private fun onConnectivityAvailable() {
-        binding.run {
-            textNetworkStatus.text = getString(R.string.text_connectivity)
-            containerNetworkStatus.apply {
-                setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.colorStatusConnected,
-                        requireActivity().theme
-                    )
-                )
-                animate()
-                    .alpha(1f)
-                    .setStartDelay(ANIMATION_DURATION)
-                    .setDuration(ANIMATION_DURATION)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                hide()
-                            }
+    private fun onConnectivityAvailable() = with(binding) {
+        textNetworkStatus.apply {
+            text = getString(R.string.text_connectivity)
+            setDrawableLeft(R.drawable.ic_internet_on)
+        }
+        containerNetworkStatus.apply {
+            setBackgroundColor(
+                context.getColorCompat(R.color.colorStatusConnected)
+            )
+            animate()
+                .alpha(1f)
+                .setStartDelay(ANIMATION_DURATION)
+                .setDuration(ANIMATION_DURATION)
+                .setListener(
+                    object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            hide()
                         }
-                    )
-                    .start()
-            }
+                    }
+                )
+                .start()
         }
     }
 
-    private fun onConnectivityUnavailable() {
-        binding.run {
-            textNetworkStatus.text = getString(R.string.text_no_connectivity)
-            val offlineDrawable =
-                ContextCompat.getDrawable(requireContext(), R.drawable.ic_internet_off)
-            binding.textNetworkStatus.setCompoundDrawablesWithIntrinsicBounds(
-                offlineDrawable,
-                null,
-                null,
-                null
+    private fun onConnectivityUnavailable() = with(binding) {
+        textNetworkStatus.apply {
+            text = getString(R.string.text_no_connectivity)
+            setDrawableLeft(R.drawable.ic_internet_off)
+        }
+        containerNetworkStatus.apply {
+            show()
+            setBackgroundColor(
+                context.getColorCompat(R.color.colorStatusNotConnected)
             )
-            binding.containerNetworkStatus.apply {
-                show()
-                setBackgroundColor(
-                    ResourcesCompat.getColor(
-                        resources,
-                        R.color.colorStatusNotConnected,
-                        requireActivity().theme
-                    )
-                )
-            }
         }
     }
 
     companion object {
         const val ANIMATION_DURATION = 3000L
     }
+
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentArticlesBinding.inflate(inflater, container, false)
 }

@@ -29,38 +29,23 @@ package www.thecodemonks.techbytes.ui.details
 import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.core.app.ShareCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentArticleDetailsBinding
 import www.thecodemonks.techbytes.model.Article
+import www.thecodemonks.techbytes.ui.base.BaseFragment
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants
 
 @AndroidEntryPoint
-class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
+class ArticleDetailsFragment : BaseFragment<FragmentArticleDetailsBinding, ArticleViewModel>() {
 
-    private val viewModel: ArticleViewModel by activityViewModels()
-
+    override val viewModel: ArticleViewModel by activityViewModels()
     private val args: ArticleDetailsFragmentArgs by navArgs()
-
     private var completeUrl: String? = null
-
-    private lateinit var _binding: FragmentArticleDetailsBinding
-    private val binding get() = _binding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentArticleDetailsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,8 +73,7 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
                 bundle.source
             )
             viewModel.upsertArticle(article).also {
-                Toast.makeText(activity, getString(R.string.successfully_saved), Toast.LENGTH_SHORT)
-                    .show()
+                toast(getString(R.string.successfully_saved))
             }
         }
     }
@@ -122,4 +106,9 @@ class ArticleDetailsFragment : Fragment(R.layout.fragment_article_details) {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentArticleDetailsBinding.inflate(inflater, container, false)
 }
