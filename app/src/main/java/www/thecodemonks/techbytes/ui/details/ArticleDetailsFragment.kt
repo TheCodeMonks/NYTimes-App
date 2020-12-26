@@ -41,7 +41,7 @@ import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.Constants
 
 @AndroidEntryPoint
-class ArticleDetailsFragment : BaseFragment<FragmentArticleDetailsBinding, ArticleViewModel>()  {
+class ArticleDetailsFragment : BaseFragment<FragmentArticleDetailsBinding, ArticleViewModel>() {
 
     override val viewModel: ArticleViewModel by activityViewModels()
     private val args: ArticleDetailsFragmentArgs by navArgs()

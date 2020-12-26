@@ -46,7 +46,7 @@ import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 import www.thecodemonks.techbytes.utils.setVisible
 
 @AndroidEntryPoint
-class BookmarksFragment: BaseFragment<FragmentBookmarksBinding, ArticleViewModel>() {
+class BookmarksFragment : BaseFragment<FragmentBookmarksBinding, ArticleViewModel>() {
 
     override val viewModel: ArticleViewModel by activityViewModels()
     private lateinit var newsAdapter: NewsAdapter
@@ -127,7 +127,6 @@ class BookmarksFragment: BaseFragment<FragmentBookmarksBinding, ArticleViewModel
         ItemTouchHelper(itemTouchHelperCallback).apply {
             attachToRecyclerView(binding.bookmarkRv)
         }
-
     }
 
     private fun initViews() = with(binding) {
@@ -136,11 +135,10 @@ class BookmarksFragment: BaseFragment<FragmentBookmarksBinding, ArticleViewModel
             bookmarkRv.adapter = it
             bookmarkRv.addItemDecoration(SpacesItemDecorator(16))
         }
-
     }
 
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ) =  FragmentBookmarksBinding.inflate(inflater, container, false)
+    ) = FragmentBookmarksBinding.inflate(inflater, container, false)
 }

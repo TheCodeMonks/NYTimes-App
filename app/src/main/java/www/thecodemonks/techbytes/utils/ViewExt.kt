@@ -49,4 +49,3 @@ fun TextView.setDrawableLeft(@DrawableRes id: Int = 0) {
 }
 
 fun Context.getColorCompat(color: Int) = ContextCompat.getColor(this, color)
-
