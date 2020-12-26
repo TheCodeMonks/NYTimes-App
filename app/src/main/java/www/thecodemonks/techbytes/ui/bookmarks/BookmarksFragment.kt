@@ -29,59 +29,58 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_bookmarks.*
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentBookmarksBinding
 import www.thecodemonks.techbytes.model.Article
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
+import www.thecodemonks.techbytes.ui.base.BaseFragment
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 import www.thecodemonks.techbytes.utils.setVisible
 
 @AndroidEntryPoint
-class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
+class BookmarksFragment: BaseFragment<FragmentBookmarksBinding, ArticleViewModel>() {
 
-    private val viewModel: ArticleViewModel by activityViewModels()
-
+    override val viewModel: ArticleViewModel by activityViewModels()
     private lateinit var newsAdapter: NewsAdapter
-
-    private lateinit var _binding: FragmentBookmarksBinding
-    private val binding get() = _binding
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentBookmarksBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setup()
+        initViews()
+        observeArticles()
+        articleItemOnClick()
+        swipeToDeleteArticle()
     }
 
-    private fun setup() = with(binding) {
-
-        newsAdapter = NewsAdapter().also {
-            bookmarkRv.adapter = it
-            bookmarkRv.addItemDecoration(SpacesItemDecorator(16))
+    private fun articleItemOnClick() {
+        newsAdapter.setOnItemClickListener { article ->
+            val bundle = Bundle().apply {
+                putSerializable("article", article)
+            }
+            findNavController().navigate(
+                R.id.action_bookmarksFragment_to_articleDetailsFragment,
+                bundle
+            )
         }
+    }
 
+    private fun observeArticles() {
         // get saved articles from room db
         viewModel.getSavedArticle().observe(viewLifecycleOwner) {
             val articles = it ?: emptyList()
             emptyStateLayout.setVisible(articles.isEmpty())
             newsAdapter.differ.submitList(articles)
         }
+    }
 
+    private fun swipeToDeleteArticle() {
         // init item touch callback for swipe action
         val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -129,14 +128,19 @@ class BookmarksFragment : Fragment(R.layout.fragment_bookmarks) {
             attachToRecyclerView(binding.bookmarkRv)
         }
 
-        newsAdapter.setOnItemClickListener { article ->
-            val bundle = Bundle().apply {
-                putSerializable("article", article)
-            }
-            findNavController().navigate(
-                R.id.action_bookmarksFragment_to_articleDetailsFragment,
-                bundle
-            )
-        }
     }
+
+    private fun initViews() = with(binding) {
+
+        newsAdapter = NewsAdapter().also {
+            bookmarkRv.adapter = it
+            bookmarkRv.addItemDecoration(SpacesItemDecorator(16))
+        }
+
+    }
+
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) =  FragmentBookmarksBinding.inflate(inflater, container, false)
 }
