@@ -23,7 +23,6 @@
  *  * SOFTWARE.
  *
  */
-
 package www.thecodemonks.techbytes.ui.bookmarks
 
 import android.os.Bundle

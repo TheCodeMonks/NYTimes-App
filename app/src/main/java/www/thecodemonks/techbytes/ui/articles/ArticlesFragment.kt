@@ -37,8 +37,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentArticlesBinding
 import www.thecodemonks.techbytes.model.Category
@@ -57,6 +58,7 @@ import www.thecodemonks.techbytes.utils.SpacesItemDecorator
 import www.thecodemonks.techbytes.utils.hide
 import www.thecodemonks.techbytes.utils.show
 
+@AndroidEntryPoint
 class ArticlesFragment : Fragment(R.layout.fragment_articles) {
 
     private val viewModel: ArticleViewModel by activityViewModels()
