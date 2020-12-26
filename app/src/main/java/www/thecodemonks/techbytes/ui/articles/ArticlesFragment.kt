@@ -210,45 +210,40 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticleViewModel>
             }
     }
 
-    private fun onConnectivityAvailable() {
-
-        binding.run {
-            textNetworkStatus.apply {
-                text = getString(R.string.text_connectivity)
-                setDrawableLeft(R.drawable.ic_internet_on)
-            }
-            containerNetworkStatus.apply {
-                setBackgroundColor(
-                    context.getColorCompat(R.color.colorStatusConnected)
-                )
-                animate()
-                    .alpha(1f)
-                    .setStartDelay(ANIMATION_DURATION)
-                    .setDuration(ANIMATION_DURATION)
-                    .setListener(
-                        object : AnimatorListenerAdapter() {
-                            override fun onAnimationEnd(animation: Animator) {
-                                hide()
-                            }
+    private fun onConnectivityAvailable() = with(binding) {
+        textNetworkStatus.apply {
+            text = getString(R.string.text_connectivity)
+            setDrawableLeft(R.drawable.ic_internet_on)
+        }
+        containerNetworkStatus.apply {
+            setBackgroundColor(
+                context.getColorCompat(R.color.colorStatusConnected)
+            )
+            animate()
+                .alpha(1f)
+                .setStartDelay(ANIMATION_DURATION)
+                .setDuration(ANIMATION_DURATION)
+                .setListener(
+                    object : AnimatorListenerAdapter() {
+                        override fun onAnimationEnd(animation: Animator) {
+                            hide()
                         }
-                    )
-                    .start()
-            }
+                    }
+                )
+                .start()
         }
     }
 
-    private fun onConnectivityUnavailable() {
-        binding.run {
-            textNetworkStatus.apply {
-                text = getString(R.string.text_no_connectivity)
-                setDrawableLeft(R.drawable.ic_internet_off)
-            }
-            containerNetworkStatus.apply {
-                show()
-                setBackgroundColor(
-                    context.getColorCompat(R.color.colorStatusNotConnected)
-                )
-            }
+    private fun onConnectivityUnavailable() = with(binding) {
+        textNetworkStatus.apply {
+            text = getString(R.string.text_no_connectivity)
+            setDrawableLeft(R.drawable.ic_internet_off)
+        }
+        containerNetworkStatus.apply {
+            show()
+            setBackgroundColor(
+                context.getColorCompat(R.color.colorStatusNotConnected)
+            )
         }
     }
 
