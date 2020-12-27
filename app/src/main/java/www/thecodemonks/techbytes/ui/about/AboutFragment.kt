@@ -47,7 +47,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, ArticleViewModel>() {
         initViews()
     }
 
-
     private fun initViews() {
         binding.run {
             appVersion.text = getString(
@@ -74,7 +73,6 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, ArticleViewModel>() {
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentAboutBinding.inflate(inflater, container, false)
-
 
     companion object {
         const val REPO_URL = "https://github.com/TheCodeMonks/NYTimes-App"
