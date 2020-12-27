@@ -37,11 +37,9 @@ import www.thecodemonks.techbytes.BuildConfig
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentAboutBinding
 import www.thecodemonks.techbytes.ui.base.BaseFragment
-import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 
-class AboutFragment : BaseFragment<FragmentAboutBinding, ArticleViewModel>() {
-    override val viewModel: ArticleViewModel by activityViewModels()
-
+class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel>() {
+    override val viewModel: AboutViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
