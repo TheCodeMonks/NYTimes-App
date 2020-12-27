@@ -50,6 +50,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_articlesFragment_to_aboutFragment"
+            app:destination="@id/aboutFragment" />
     </fragment>
     <fragment
         android:id="@+id/bookmarksFragment"
@@ -69,4 +72,9 @@
             android:name="article"
             app:argType="www.thecodemonks.techbytes.model.Article" />
     </fragment>
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="www.thecodemonks.techbytes.ui.about.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
 </navigation>

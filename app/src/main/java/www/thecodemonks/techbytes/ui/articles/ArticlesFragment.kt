@@ -187,6 +187,10 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticleViewModel>
                 setUIMode(item, item.isChecked)
                 true
             }
+            R.id.action_about -> {
+                findNavController().navigate(R.id.action_articlesFragment_to_aboutFragment)
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

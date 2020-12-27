@@ -26,9 +26,15 @@
 
 package www.thecodemonks.techbytes.ui.about
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import www.thecodemonks.techbytes.BuildConfig
+import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentAboutBinding
 import www.thecodemonks.techbytes.ui.base.BaseFragment
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
@@ -36,9 +42,42 @@ import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
 class AboutFragment : BaseFragment<FragmentAboutBinding, ArticleViewModel>() {
     override val viewModel: ArticleViewModel by activityViewModels()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+
+    private fun initViews() {
+        binding.run {
+            appVersion.text = getString(
+                R.string.text_app_version,
+                BuildConfig.VERSION_NAME,
+                BuildConfig.VERSION_CODE
+            )
+
+            license.setOnClickListener {
+                launchBrowser(REPO_LICENSE)
+            }
+
+            visitURL.setOnClickListener {
+                launchBrowser(REPO_URL)
+            }
+        }
+    }
+
+    private fun launchBrowser(url: String) = Intent(Intent.ACTION_VIEW, Uri.parse(url)).also {
+        startActivity(it)
+    }
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentAboutBinding.inflate(inflater, container, false)
 
+
+    companion object {
+        const val REPO_URL = "https://github.com/TheCodeMonks/NYTimes-App"
+        const val REPO_LICENSE = "https://github.com/TheCodeMonks/NYTimes-App/blob/master/LICENSE"
+    }
 }
