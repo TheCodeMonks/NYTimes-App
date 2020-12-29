@@ -56,9 +56,9 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel>() {
             launchBrowser(REPO_LICENSE)
         }
 
-            visitURL.setOnClickListener {
-                launchBrowser(REPO_URL)
-            }
+        visitURL.setOnClickListener {
+            launchBrowser(REPO_URL)
+        }
     }
 
     private fun launchBrowser(url: String) = Intent(Intent.ACTION_VIEW, Uri.parse(url)).also {
