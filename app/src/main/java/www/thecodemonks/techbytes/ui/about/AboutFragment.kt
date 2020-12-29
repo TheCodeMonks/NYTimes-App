@@ -45,22 +45,20 @@ class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel>() {
         initViews()
     }
 
-    private fun initViews() {
-        binding.run {
-            appVersion.text = getString(
-                R.string.text_app_version,
-                BuildConfig.VERSION_NAME,
-                BuildConfig.VERSION_CODE
-            )
+    private fun initViews() = with(binding) {
+        appVersion.text = getString(
+            R.string.text_app_version,
+            BuildConfig.VERSION_NAME,
+            BuildConfig.VERSION_CODE
+        )
 
-            license.setOnClickListener {
-                launchBrowser(REPO_LICENSE)
-            }
+        license.setOnClickListener {
+            launchBrowser(REPO_LICENSE)
+        }
 
             visitURL.setOnClickListener {
                 launchBrowser(REPO_URL)
             }
-        }
     }
 
     private fun launchBrowser(url: String) = Intent(Intent.ACTION_VIEW, Uri.parse(url)).also {
