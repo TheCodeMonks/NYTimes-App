@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /*
   ~  * MIT License
   ~  *
@@ -25,25 +24,17 @@
   ~  */
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_bookmark"
-        android:icon="@drawable/ic_bookmarks"
-        android:title="@string/bookmark"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_night_mode"
-        android:checkable="true"
-        android:icon="@drawable/ic_day"
-        android:title="@string/night_mode"
-        app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_about"
-        android:enabled="true"
-        android:title="@string/menu_about"
-        app:showAsAction="never" />
+<resources>
+    <dimen name="dimen_0">0dp</dimen>
+    <dimen name="dimen_4">4dp</dimen>
+    <dimen name="dimen_8">8dp</dimen>
+    <dimen name="dimen_12">12dp</dimen>
+    <dimen name="dimen_16">16dp</dimen>
+    <dimen name="dimen_24">24dp</dimen>
+    <dimen name="dimen_32">32dp</dimen>
+    <dimen name="dimen_48">48dp</dimen>
+    <dimen name="dimen_64">64dp</dimen>
+    <dimen name="dimen_250">250dp</dimen>
 
-
-</menu>
+</resources>

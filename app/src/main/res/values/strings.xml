@@ -51,5 +51,13 @@
     <string name="successfully_saved">Article saved successfully!</string>
     <string name="text_empty_state_title">Oops!, It\'s Empty</string>
     <string name="text_empty_state_description">There are no bookmarks found right now</string>
+    <string name="menu_about">About</string>
+
+    <!--  About -->
+    <string name="text_about_license_title"><![CDATA[Attributions & License]]></string>
+    <string name="text_about_license">Licensed Under MIT License</string>
+    <string name="text_about_visit_title">Visit</string>
+    <string name="text_about_visit_url"><u>https://github.com/TheCodeMonks/NYTimes-App</u></string>
+    <string name="text_app_version">v%s (%d)</string>
 
 </resources>
