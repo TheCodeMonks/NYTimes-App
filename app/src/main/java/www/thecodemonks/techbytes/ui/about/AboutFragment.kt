@@ -33,11 +33,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import dagger.hilt.android.AndroidEntryPoint
 import www.thecodemonks.techbytes.BuildConfig
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentAboutBinding
 import www.thecodemonks.techbytes.ui.base.BaseFragment
 
+@AndroidEntryPoint
 class AboutFragment : BaseFragment<FragmentAboutBinding, AboutViewModel>() {
     override val viewModel: AboutViewModel by activityViewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

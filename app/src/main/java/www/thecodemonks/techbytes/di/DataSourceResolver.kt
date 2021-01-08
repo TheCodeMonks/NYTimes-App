@@ -29,6 +29,7 @@ package www.thecodemonks.techbytes.di
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import www.thecodemonks.techbytes.db.ArticleDao
 import www.thecodemonks.techbytes.db.ArticleDatabase
 import www.thecodemonks.techbytes.repo.ArticleRepository
@@ -37,8 +38,8 @@ import javax.inject.Singleton
 
 // these modules components are android framework free
 
+@InstallIn(SingletonComponent::class)
 @Module
-@InstallIn(Singleton::class)
 object DataSourceResolver {
 
     @Provides
