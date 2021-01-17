@@ -35,7 +35,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_bookmarks.*
 import www.thecodemonks.techbytes.R
 import www.thecodemonks.techbytes.databinding.FragmentBookmarksBinding
 import www.thecodemonks.techbytes.model.Article
@@ -75,7 +74,7 @@ class BookmarksFragment : BaseFragment<FragmentBookmarksBinding, ArticleViewMode
         // get saved articles from room db
         viewModel.getSavedArticle().observe(viewLifecycleOwner) {
             val articles = it ?: emptyList()
-            emptyStateLayout.setVisible(articles.isEmpty())
+            binding.emptyStateLayout.setVisible(articles.isEmpty())
             newsAdapter.differ.submitList(articles)
         }
     }
