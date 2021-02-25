@@ -157,6 +157,7 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticleViewModel>
             refreshArticles.isRefreshing = false
             newsAdapter.differ.submitList(it)
             articleRv.animate().alpha(1f)
+            articleRv.itemAnimator = null // prevents flickering between article categories
         }
     }
 
