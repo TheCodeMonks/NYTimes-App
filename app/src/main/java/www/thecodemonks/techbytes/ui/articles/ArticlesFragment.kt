@@ -26,7 +26,6 @@
 
 package www.thecodemonks.techbytes.ui.articles
 
-
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
@@ -271,6 +270,4 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticleViewModel>
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentArticlesBinding.inflate(inflater, container, false)
-
-
 }
