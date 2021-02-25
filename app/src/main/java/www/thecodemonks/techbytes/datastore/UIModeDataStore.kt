@@ -29,8 +29,8 @@ package www.thecodemonks.techbytes.datastore
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.preferencesKey
 import androidx.datastore.preferences.createDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -64,7 +64,7 @@ class UIModeDataStore(context: Context) :
 
     companion object {
         private const val PREF_FILE_UI_MODE = "ui_mode_preference"
-        private val UI_MODE_KEY = preferencesKey<Boolean>("ui_mode")
+        private val UI_MODE_KEY = booleanPreferencesKey("ui_mode")
     }
 }
 

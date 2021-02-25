@@ -26,10 +26,16 @@
 
 package www.thecodemonks.techbytes.ui.articles
 
+
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -44,7 +50,6 @@ import www.thecodemonks.techbytes.ui.adapter.CategoryAdapter
 import www.thecodemonks.techbytes.ui.adapter.NewsAdapter
 import www.thecodemonks.techbytes.ui.base.BaseFragment
 import www.thecodemonks.techbytes.ui.viewmodel.ArticleViewModel
-import www.thecodemonks.techbytes.utils.*
 import www.thecodemonks.techbytes.utils.Constants.NY_BUSINESS
 import www.thecodemonks.techbytes.utils.Constants.NY_EDUCATION
 import www.thecodemonks.techbytes.utils.Constants.NY_SCIENCE
@@ -52,6 +57,12 @@ import www.thecodemonks.techbytes.utils.Constants.NY_SPACE
 import www.thecodemonks.techbytes.utils.Constants.NY_SPORTS
 import www.thecodemonks.techbytes.utils.Constants.NY_TECH
 import www.thecodemonks.techbytes.utils.Constants.NY_YOURMONEY
+import www.thecodemonks.techbytes.utils.NetworkUtils
+import www.thecodemonks.techbytes.utils.SpacesItemDecorator
+import www.thecodemonks.techbytes.utils.getColorCompat
+import www.thecodemonks.techbytes.utils.hide
+import www.thecodemonks.techbytes.utils.setDrawableLeft
+import www.thecodemonks.techbytes.utils.show
 
 @AndroidEntryPoint
 class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticleViewModel>() {
@@ -260,4 +271,6 @@ class ArticlesFragment : BaseFragment<FragmentArticlesBinding, ArticleViewModel>
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentArticlesBinding.inflate(inflater, container, false)
+
+
 }

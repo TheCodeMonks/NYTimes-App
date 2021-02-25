@@ -28,7 +28,12 @@ package www.thecodemonks.techbytes.ui.details
 
 import android.os.Build
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
