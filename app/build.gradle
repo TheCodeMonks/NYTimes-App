@@ -109,7 +109,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1'
 
     // Navigation Components
-    implementation "androidx.navigation:navigation-fragment-ktx:2.3.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.3.4"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.3"
 
     // Coroutine Lifecycle Scopes
