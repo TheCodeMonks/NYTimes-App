@@ -98,7 +98,7 @@ dependencies {
     kapt "androidx.room:room-compiler:2.2.6"
 
     // Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:2.2.6"
+    implementation "androidx.room:room-ktx:2.3.0"
 
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
